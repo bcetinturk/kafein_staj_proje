@@ -2,14 +2,10 @@ package com.example.kafein_staj.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name = "User",
-        uniqueConstraints = @UniqueConstraint(name = "user_id", columnNames = {"userId"})
-
-)
 public class Order {
     @Id
     @GeneratedValue
@@ -31,8 +27,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToMany
-    private List<Product> products;
+
+    @OneToMany(mappedBy = "order")
+    private List<Product> products =  new ArrayList<>();
 
     public Order(Long order_id, Long order_no, Long order_total_price, String order_destination, User user, List<Product> products) {
         this.order_id = order_id;

@@ -2,6 +2,8 @@
 package com.example.kafein_staj.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -18,6 +20,8 @@ public class Basket {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "basket")
+    private List<Product> products = new ArrayList<>();
 
     public Basket(Long basket_id, User user) {
         this.basket_id = basket_id;
