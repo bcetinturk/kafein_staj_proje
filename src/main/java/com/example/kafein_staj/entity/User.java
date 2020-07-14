@@ -30,8 +30,7 @@ public class User {
     @NotNull(message = "Address can not be null!")
     private String user_address;
 
-    @OneToOne
-    @JoinColumn(name="role_id")
+    @Enumerated
     private Role role;
 
     @OneToOne(mappedBy = "user")
