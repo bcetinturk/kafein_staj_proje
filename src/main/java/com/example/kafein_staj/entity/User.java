@@ -5,11 +5,6 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(
-        name="User",
-        uniqueConstraints = @UniqueConstraint(name = "user_id", columnNames = {"userId"})
-
-)
 public class User {
     @Id
     @GeneratedValue
@@ -38,6 +33,9 @@ public class User {
     @OneToOne
     @JoinColumn(name="role_id")
     private Role role;
+
+    @OneToOne(mappedBy = "user")
+    private Basket basket;
 
 
     public User(Long user_id, String user_name, String user_lastname, String user_mail, long user_number, String user_address, Role role) {

@@ -4,13 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-        name = "Category",
-        uniqueConstraints = @UniqueConstraint(name = "role_id", columnNames = {"roleId"})
-)
 public class Category {
-    @Id
-    @GeneratedValue
     private Long category_parent_id;
 
     @Id
@@ -20,6 +14,9 @@ public class Category {
     @Column(nullable = false)
     @NotNull(message = "title can not be null!")
     private String title;
+
+    public Category() {
+    }
 
     public Category(Long category_parent_id, Long category_id, String title) {
         this.category_parent_id = category_parent_id;

@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name="Basket",
-        uniqueConstraints = @UniqueConstraint(name = "basket_id", columnNames = {"basketId"})
-
-)
 public class Basket {
     @Id
     @GeneratedValue
@@ -21,7 +16,7 @@ public class Basket {
     private User user;
 
     @OneToMany(mappedBy = "basket")
-    private List<Product> products = new ArrayList<>();
+    private List<BasketProduct> products = new ArrayList<>();
 
     public Basket(Long basket_id, User user) {
         this.basket_id = basket_id;

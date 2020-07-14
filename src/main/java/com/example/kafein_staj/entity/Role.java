@@ -5,10 +5,6 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(
-        name = "Role",
-        uniqueConstraints = @UniqueConstraint(name = "role_id", columnNames = {"roleId"})
-)
 public class Role {
     @Id
     @GeneratedValue

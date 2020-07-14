@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name="corder")
 public class Order {
     @Id
     @GeneratedValue
@@ -29,15 +30,14 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order")
-    private List<Product> products =  new ArrayList<>();
+    private List<OrderProduct> products = new ArrayList<>();
 
-    public Order(Long order_id, Long order_no, Long order_total_price, String order_destination, User user, List<Product> products) {
+    public Order(Long order_id, Long order_no, Long order_total_price, String order_destination, User user) {
         this.order_id = order_id;
         this.order_no = order_no;
         this.order_total_price = order_total_price;
         this.order_destination = order_destination;
         this.user = user;
-        this.products = products;
     }
 
     public Long getOrder_id() {
@@ -80,11 +80,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public List<OrderProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<OrderProduct> products) {
         this.products = products;
     }
 }

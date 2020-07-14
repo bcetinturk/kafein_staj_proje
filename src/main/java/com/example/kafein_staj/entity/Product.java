@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name="Product",
-        uniqueConstraints = @UniqueConstraint(name = "product_id", columnNames = {"productId"})
-
-)
 public class Product {
     @Id
     @GeneratedValue
@@ -18,7 +13,7 @@ public class Product {
 
     @Column(nullable = false)
     @NotNull(message = "product name can not be null!")
-    private String procudt_name;
+    private String product_name;
 
     @Column(nullable = false)
     @NotNull(message = "price can not be null!")
@@ -28,24 +23,25 @@ public class Product {
     @NotNull(message = "can not be null!")
     private int product_quantity;
 
-    @Column(nullable = false)
-    @NotNull(message = "can not be null!")
-    private String product_destination;
+    private String description;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product")
     private List<OrderProduct> orders =  new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<BasketProduct> baskets = new ArrayList<>();
 
-    public Product(Long product_id, String procudt_name, long product_price, int product_quantity, String product_destination, Category category) {
+
+    public Product(Long product_id, String procudt_name, long product_price, int product_quantity, String description, Category category) {
         this.product_id = product_id;
-        this.procudt_name = procudt_name;
+        this.product_name = procudt_name;
         this.product_price = product_price;
         this.product_quantity = product_quantity;
-        this.product_destination = product_destination;
+        this.description = description;
         this.category = category;
     }
 
@@ -57,12 +53,12 @@ public class Product {
         this.product_id = product_id;
     }
 
-    public String getProcudt_name() {
-        return procudt_name;
+    public String getProduct_name() {
+        return product_name;
     }
 
-    public void setProcudt_name(String procudt_name) {
-        this.procudt_name = procudt_name;
+    public void setProduct_name(String procudt_name) {
+        this.product_name = procudt_name;
     }
 
     public long getProduct_price() {
@@ -81,12 +77,12 @@ public class Product {
         this.product_quantity = product_quantity;
     }
 
-    public String getProduct_destination() {
-        return product_destination;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProduct_destination(String product_destination) {
-        this.product_destination = product_destination;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Category getCategory() {
