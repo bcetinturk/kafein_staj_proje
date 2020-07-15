@@ -9,19 +9,19 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue
-    private Long product_id;
+    private Long id;
 
     @Column(nullable = false)
     @NotNull(message = "product name can not be null!")
-    private String product_name;
+    private String productName;
 
     @Column(nullable = false)
     @NotNull(message = "price can not be null!")
-    private long product_price;
+    private long price;
 
     @Column(nullable = false)
     @NotNull(message = "can not be null!")
-    private int product_quantity;
+    private int quantity;
 
     private String description;
 
@@ -36,45 +36,45 @@ public class Product {
     private List<BasketProduct> baskets = new ArrayList<>();
 
 
-    public Product(Long product_id, String procudt_name, long product_price, int product_quantity, String description, Category category) {
-        this.product_id = product_id;
-        this.product_name = procudt_name;
-        this.product_price = product_price;
-        this.product_quantity = product_quantity;
+    public Product(Long id, String procudt_name, long product_price, int product_quantity, String description, Category category) {
+        this.id = id;
+        this.productName = procudt_name;
+        this.price = product_price;
+        this.quantity = product_quantity;
         this.description = description;
         this.category = category;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setId(Long product_id) {
+        this.id = product_id;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String procudt_name) {
-        this.product_name = procudt_name;
+    public void setProductName(String procudt_name) {
+        this.productName = procudt_name;
     }
 
-    public long getProduct_price() {
-        return product_price;
+    public long getPrice() {
+        return price;
     }
 
-    public void setProduct_price(long product_price) {
-        this.product_price = product_price;
+    public void setPrice(long product_price) {
+        this.price = product_price;
     }
 
-    public int getProduct_quantity() {
-        return product_quantity;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setProduct_quantity(int product_quantity) {
-        this.product_quantity = product_quantity;
+    public void setQuantity(int product_quantity) {
+        this.quantity = product_quantity;
     }
 
     public String getDescription() {

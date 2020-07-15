@@ -5,11 +5,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class Category {
-    private Long category_parent_id;
+    private Long categoryParentId;
 
     @Id
     @GeneratedValue
-    private Long category_id;
+    @Column(name = "category_id")
+    private Long categoryId;
 
     @Column(nullable = false)
     @NotNull(message = "title can not be null!")
@@ -18,26 +19,26 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long category_parent_id, Long category_id, String title) {
-        this.category_parent_id = category_parent_id;
-        this.category_id = category_id;
+    public Category(Long categoryParentId, Long categoryId, String title) {
+        this.categoryParentId = categoryParentId;
+        this.categoryId = categoryId;
         this.title = title;
     }
 
-    public Long getCategory_parent_id() {
-        return category_parent_id;
+    public Long getCategoryParentId() {
+        return categoryParentId;
     }
 
-    public void setCategory_parent_id(Long category_parent_id) {
-        this.category_parent_id = category_parent_id;
+    public void setCategoryParentId(Long category_parent_id) {
+        this.categoryParentId = category_parent_id;
     }
 
-    public Long getCategory_id() {
-        return category_id;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(Long category_id) {
+        this.categoryId = category_id;
     }
 
     public String getTitle() {

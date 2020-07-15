@@ -10,20 +10,20 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue
-    private Long order_id;
+    private Long orderId;
 
     @Column(nullable = false)
     @NotNull(message = "order number can not be null!")
-    private Long order_no;
+    private Long orderNo;
 
     @Column(nullable = false)
     @NotNull(message = "total price can not be null!")
-    private Long order_total_price;
+    private Long totalPrice;
 
 
     @Column(nullable = false)
     @NotNull(message = "destination")
-    private String order_destination;
+    private String destination;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,44 +32,44 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> products = new ArrayList<>();
 
-    public Order(Long order_id, Long order_no, Long order_total_price, String order_destination, User user) {
-        this.order_id = order_id;
-        this.order_no = order_no;
-        this.order_total_price = order_total_price;
-        this.order_destination = order_destination;
+    public Order(Long order_id, Long order_no, Long order_total_price, String destination, User user) {
+        this.orderId = order_id;
+        this.orderNo = order_no;
+        this.totalPrice = order_total_price;
+        this.destination = destination;
         this.user = user;
     }
 
-    public Long getOrder_id() {
-        return order_id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_id(Long order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Long order_id) {
+        this.orderId = order_id;
     }
 
-    public Long getOrder_no() {
-        return order_no;
+    public Long getOrderNo() {
+        return orderNo;
     }
 
-    public void setOrder_no(Long order_no) {
-        this.order_no = order_no;
+    public void setOrderNo(Long order_no) {
+        this.orderNo = order_no;
     }
 
-    public Long getOrder_total_price() {
-        return order_total_price;
+    public Long getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setOrder_total_price(Long order_total_price) {
-        this.order_total_price = order_total_price;
+    public void setTotalPrice(Long order_total_price) {
+        this.totalPrice = order_total_price;
     }
 
-    public String getOrder_destination() {
-        return order_destination;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setOrder_destination(String order_destination) {
-        this.order_destination = order_destination;
+    public void setDestination(String order_destination) {
+        this.destination = order_destination;
     }
 
     public User getUser() {

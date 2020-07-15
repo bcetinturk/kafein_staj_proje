@@ -8,27 +8,27 @@ import javax.validation.constraints.NotNull;
 public class User {
     @Id
     @GeneratedValue
-    private Long user_id;
+    private Long id;
 
     @Column(nullable = false)
     @NotNull(message="Name can not be null!")
-    private String user_name;
+    private String firstName;
 
     @Column(nullable = false)
     @NotNull(message="Lastname can not be null!")
-    private String user_lastname;
+    private String lastName;
 
     @Column(nullable = false)
     @NotNull(message="Email can not be null!")
-    private String user_mail;
+    private String email;
 
     @Column(nullable = false)
     @NotNull(message = "phone can not be null!")
-    private long user_number;
+    private long phoneNumber;
 
     @Column(nullable = false)
     @NotNull(message = "Address can not be null!")
-    private String user_address;
+    private String address;
 
     @Enumerated
     private Role role;
@@ -37,62 +37,62 @@ public class User {
     private Basket basket;
 
 
-    public User(Long user_id, String user_name, String user_lastname, String user_mail, long user_number, String user_address, Role role) {
-        this.user_id = user_id;
-        this.user_name = user_name;
-        this.user_lastname = user_lastname;
-        this.user_mail = user_mail;
-        this.user_number = user_number;
-        this.user_address = user_address;
+    public User(Long id, String firstName, String user_lastname, String user_mail, long user_number, String address, Role role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = user_lastname;
+        this.email = user_mail;
+        this.phoneNumber = user_number;
+        this.address = address;
         this.role = role;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setId(Long user_id) {
+        this.id = user_id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setFirstName(String user_name) {
+        this.firstName = user_name;
     }
 
-    public String getUser_lastname() {
-        return user_lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUser_lastname(String user_lastname) {
-        this.user_lastname = user_lastname;
+    public void setLastName(String user_lastname) {
+        this.lastName = user_lastname;
     }
 
-    public String getUser_mail() {
-        return user_mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser_mail(String user_mail) {
-        this.user_mail = user_mail;
+    public void setEmail(String user_mail) {
+        this.email = user_mail;
     }
 
-    public long getUser_number() {
-        return user_number;
+    public long getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setUser_number(long user_number) {
-        this.user_number = user_number;
+    public void setPhoneNumber(long user_number) {
+        this.phoneNumber = user_number;
     }
 
-    public String getUser_address() {
-        return user_address;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUser_address(String user_address) {
-        this.user_address = user_address;
+    public void setAddress(String user_address) {
+        this.address = user_address;
     }
 
     public Role getRole() {

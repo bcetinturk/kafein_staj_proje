@@ -9,7 +9,7 @@ import java.util.List;
 public class Basket {
     @Id
     @GeneratedValue
-    private Long basket_id;
+    private Long basketId;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -19,16 +19,16 @@ public class Basket {
     private List<BasketProduct> products = new ArrayList<>();
 
     public Basket(Long basket_id, User user) {
-        this.basket_id = basket_id;
+        this.basketId = basket_id;
         this.user = user;
     }
 
-    public Long getBasket_id() {
-        return basket_id;
+    public Long getBasketId() {
+        return basketId;
     }
 
-    public void setBasket_id(Long basket_id) {
-        this.basket_id = basket_id;
+    public void setBasketId(Long basket_id) {
+        this.basketId = basket_id;
     }
 
     public User getUser() {
