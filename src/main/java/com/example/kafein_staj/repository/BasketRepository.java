@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface BasketRepository extends CrudRepository<Basket, Long> {
-    Optional<Basket> findByUser(User user);
+    Optional<Basket> findByUserId(Long user_id);
 }
