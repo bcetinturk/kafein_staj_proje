@@ -25,7 +25,7 @@ public class BasketProduct {
         this.basket = basket;
         this.product = product;
         this.amount = amount;
-        this.id = new BasketProductId(basket.getBasket_id(), product.getProduct_id());
+        this.id = new BasketProductId(basket.getBasketId(), product.getId());
     }
 
     public BasketProductId getId() {

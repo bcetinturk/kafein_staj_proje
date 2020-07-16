@@ -25,8 +25,16 @@ public class OrderProduct {
     public OrderProduct(Order order, Product product, int amount) {
         this.order = order;
         this.product = product;
-        this.id = new OrderProductId(order.getOrder_id(), product.getProduct_id());
+        this.id = new OrderProductId(order.getOrderId(), product.getId());
         this.amount = amount;
+    }
+
+    public OrderProductId getId() {
+        return id;
+    }
+
+    public void setId(OrderProductId id) {
+        this.id = id;
     }
 
     public Order getOrder() {
