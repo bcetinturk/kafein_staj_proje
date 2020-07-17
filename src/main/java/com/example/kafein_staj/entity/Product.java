@@ -9,7 +9,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long product_id;
 
     @Column(nullable = false)
     @NotNull(message = "product name can not be null!")
@@ -37,7 +37,7 @@ public class Product {
 
 
     public Product(Long id, String procudt_name, long product_price, int product_quantity, String description, Category category) {
-        this.id = id;
+        this.product_id = id;
         this.productName = procudt_name;
         this.price = product_price;
         this.quantity = product_quantity;
@@ -46,11 +46,11 @@ public class Product {
     }
 
     public Long getId() {
-        return id;
+        return product_id;
     }
 
     public void setId(Long product_id) {
-        this.id = product_id;
+        this.product_id = product_id;
     }
 
     public String getProductName() {

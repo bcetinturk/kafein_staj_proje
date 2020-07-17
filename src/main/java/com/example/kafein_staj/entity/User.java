@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class User {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long user_id;
 
     @Column(nullable = false)
     @NotNull(message="Name can not be null!")
@@ -38,7 +38,7 @@ public class User {
 
 
     public User(Long id, String firstName, String user_lastname, String user_mail, long user_number, String address, Role role) {
-        this.id = id;
+        this.user_id = id;
         this.firstName = firstName;
         this.lastName = user_lastname;
         this.email = user_mail;
@@ -48,11 +48,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return user_id;
     }
 
     public void setId(Long user_id) {
-        this.id = user_id;
+        this.user_id = user_id;
     }
 
     public String getFirstName() {
