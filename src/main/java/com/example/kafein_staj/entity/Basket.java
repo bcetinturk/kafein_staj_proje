@@ -38,4 +38,12 @@ public class Basket {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public List<BasketProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<BasketProduct> products) {
+        this.products = products;
+    }
 }

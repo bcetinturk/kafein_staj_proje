@@ -100,4 +100,12 @@ public class Product {
     public void setOrders(List<OrderProduct> orders) {
         this.orders = orders;
     }
+
+    public List<BasketProduct> getBaskets() {
+        return baskets;
+    }
+
+    public void setBaskets(List<BasketProduct> baskets) {
+        this.baskets = baskets;
+    }
 }

@@ -18,13 +18,13 @@ public class User {
     @NotNull(message="Lastname can not be null!")
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message="Email can not be null!")
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "phone can not be null!")
-    private long phoneNumber;
+    private String phoneNumber;
 
     @Column(nullable = false)
     @NotNull(message = "Address can not be null!")
@@ -36,8 +36,10 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Basket basket;
 
+    public User() {
+    }
 
-    public User(Long id, String firstName, String user_lastname, String user_mail, long user_number, String address, Role role) {
+    public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role, Basket basket) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = user_lastname;
@@ -45,6 +47,7 @@ public class User {
         this.phoneNumber = user_number;
         this.address = address;
         this.role = role;
+        this.basket = basket;
     }
 
     public Long getId() {
@@ -79,11 +82,11 @@ public class User {
         this.email = user_mail;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long user_number) {
+    public void setPhoneNumber(String user_number) {
         this.phoneNumber = user_number;
     }
 
@@ -101,5 +104,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
     }
 }
