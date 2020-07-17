@@ -39,8 +39,13 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role, Basket basket) {
+
+    public User(Long id) {
         this.id = id;
+    }
+
+    public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role) {
+       this.id = id;
         this.firstName = firstName;
         this.lastName = user_lastname;
         this.email = user_mail;
