@@ -5,17 +5,19 @@ import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.LongFunction;
-
+@Service
 public class DefaultOrderService implements OrderService {
    private OrderRepository orderRepository;
    private UserRepository userRepository;
-
+    @Autowired
     public DefaultOrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
