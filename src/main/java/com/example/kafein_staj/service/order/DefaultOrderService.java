@@ -30,9 +30,14 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public void updateOrder(Order order, Long order_id) {
-
-
+    public void updateOrderStatus(Order order,String newStatus) throws EntityNotFoundException {
+       long order_id=order.getOrderId();
+        if(orderRepository.findById(order_id).isPresent()){//bana verilen order mevcut mu kontrol ediyorum
+            order.setStatus(newStatus); // eğer öyle bir order varsa order'ın yeni durumunu update ediyorum.
+        }else
+        {
+            throw new EntityNotFoundException("Order with "+ order_id+ "does not exists");
+        }
     }
 
 

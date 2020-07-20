@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface OrderService {
     Order findById(Long order_id) throws EntityNotFoundException;
-    void updateOrder(Order order,Long order_id);
+    void updateOrderStatus(Order order,String newStatus) throws EntityNotFoundException;
     void deleteById(Long order_id) throws EntityNotFoundException;
 
 }
