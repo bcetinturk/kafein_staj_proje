@@ -1,8 +1,10 @@
 package com.example.kafein_staj.service.order;
 
 import com.example.kafein_staj.entity.Order;
+import com.example.kafein_staj.entity.OrderProduct;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.repository.OrderProductRepository;
 import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,11 @@ import java.util.function.LongFunction;
 public class DefaultOrderService implements OrderService {
    private OrderRepository orderRepository;
    private UserRepository userRepository;
+   private OrderProductRepository orderProductRepository;
     @Autowired
-    public DefaultOrderService(OrderRepository orderRepository) {
+    public DefaultOrderService(OrderRepository orderRepository, OrderProductRepository orderProductRepository) {
         this.orderRepository = orderRepository;
+        this.orderProductRepository = orderProductRepository;
     }
 
     @Override
@@ -49,9 +53,25 @@ public class DefaultOrderService implements OrderService {
         }catch (EmptyResultDataAccessException e){
             throw new EntityNotFoundException("Order with "+order_id+" has already been deleted");
         }
-
-
     }
 
+    @Override
+    public List<Order> getAllOrdersByCustomer(Long customer_id) throws EntityNotFoundException {
+        List<Order> orders = orderRepository.findAllByUser_Id(customer_id);
+        if(orders.size() == 0) {
+            throw new EntityNotFoundException("Customer has no orders");
+        } else {
+            return orders;
+        }
+    }
 
+    @Override
+    public List<OrderProduct> getAllProducts(Long order_id) throws EntityNotFoundException {
+        List<OrderProduct> products = orderProductRepository.findAllByOrder_OrderId(order_id);
+        if(products.size() == 0) {
+            throw new EntityNotFoundException("Order does not exist");
+        } else {
+            return products;
+        }
+    }
 }
