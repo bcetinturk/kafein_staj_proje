@@ -22,8 +22,12 @@ public class Order {
 
 
     @Column(nullable = false)
-    @NotNull(message = "destination")
+    @NotNull(message = "destination can not be null!")
     private String destination;
+
+    @Column(nullable = false)
+    @NotNull(message = "status can not be null!")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,11 +36,12 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> products = new ArrayList<>();
 
-    public Order(Long order_id, Long order_no, Long order_total_price, String destination, User user) {
-        this.orderId = order_id;
-        this.orderNo = order_no;
-        this.totalPrice = order_total_price;
+    public Order(Long orderId, Long orderNo, Long totalPrice, String destination, String status, User user) {
+        this.orderId = orderId;
+        this.orderNo = orderNo;
+        this.totalPrice = totalPrice;
         this.destination = destination;
+        this.status = status;
         this.user = user;
     }
 
@@ -83,6 +88,10 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
     public List<OrderProduct> getProducts() {
         return products;
