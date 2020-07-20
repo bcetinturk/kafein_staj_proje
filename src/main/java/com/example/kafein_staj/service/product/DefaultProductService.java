@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -62,5 +63,16 @@ public class DefaultProductService implements ProductService {
         }else{
             throw new EntityNotFoundException("Product does not exits");
         }
+    }
+
+    @Override
+    public List<Product> findAllByCategoryId(Long category_id) throws EntityNotFoundException {
+        List<Product> productList;
+       productList= productRepository.getAllByCategory_CategoryId(category_id);
+       if(productList.isEmpty()){
+           throw new EntityNotFoundException("Product not found");
+       }else{
+           return productList;
+       }
     }
 }
