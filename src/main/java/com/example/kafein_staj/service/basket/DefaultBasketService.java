@@ -1,5 +1,6 @@
 package com.example.kafein_staj.service.basket;
 
+import com.example.kafein_staj.datatransferobject.BasketDTO;
 import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.BasketProduct;
 import com.example.kafein_staj.exception.EntityNotFoundException;
@@ -28,9 +29,11 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public Basket findByUser_Id(Long id) throws EntityNotFoundException {
-        return basketRepository.findByUser_Id(id).orElseThrow(
+    public List<BasketDTO> findByUser_Id(Long id) throws EntityNotFoundException {
+        Basket basket = basketRepository.findByUser_Id(id).orElseThrow(
                 () -> new EntityNotFoundException("User does not exist or does not have a basket"));
+
+        return basketProductRepository.getBasketDetails(basket.getBasketId());
     }
 
     @Override

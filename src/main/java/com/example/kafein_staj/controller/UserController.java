@@ -1,28 +1,40 @@
 package com.example.kafein_staj.controller;
 
 import com.example.kafein_staj.controller.mapper.UserMapper;
+import com.example.kafein_staj.datatransferobject.BasketDTO;
 import com.example.kafein_staj.datatransferobject.UserDTO;
+import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.service.basket.BasketService;
 import com.example.kafein_staj.service.user.UserService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     private UserService userService;
+    private BasketService basketService;
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BasketService basketService) {
         this.userService = userService;
+        this.basketService = basketService;
     }
 
     @GetMapping("/user/{id}")
     UserDTO getUser(@PathVariable Long id) throws EntityNotFoundException {
         return userMapper.userToUserDTO(userService.findById(id));
+    }
+
+    @GetMapping("/user/{userId}/basket")
+    List<BasketDTO> getUserBasketDetails(@PathVariable Long userId) throws EntityNotFoundException {
+        return basketService.findByUser_Id(userId);
     }
 
     @PostMapping("/user/create")
