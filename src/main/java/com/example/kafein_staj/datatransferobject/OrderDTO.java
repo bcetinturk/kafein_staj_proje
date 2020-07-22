@@ -28,12 +28,13 @@ public class OrderDTO {
 
     public  OrderDTO(){}
 
-    public OrderDTO(Long order_id, Long order_no, Long totalPrice, String status, String destination) {
+    public OrderDTO(Long order_id, Long order_no, Long totalPrice, String status, String destination,UserDTO userDTO) {
         this.order_id = order_id;
         this.order_no = order_no;
         this.totalPrice = totalPrice;
         this.status = status;
         this.destination = destination;
+        this.userDTO=userDTO;
     }
     @JsonProperty
 
@@ -65,60 +66,31 @@ public class OrderDTO {
         return products;
     }
 
-    public static class OrderDTOBuilder{
-        private Long order_id;
-        private Long order_no;
-        private Long total_price;
-        private String status;
-        private String destination;
-        private UserDTO userDTO;
-        private List<OrderProduct> products = new ArrayList<>(); // Daha sonra DTO olacak
-
-        public OrderDTOBuilder(Long order_id, Long order_no, Long total_price, String status, String destination) {
-            this.order_id = order_id;
-            this.order_no = order_no;
-            this.total_price = total_price;
-            this.status = status;
-            this.destination = destination;
-        }
-
-        public OrderDTOBuilder setOrder_id(Long order_id) {
-            this.order_id = order_id;
-            return this;
-        }
-
-        public OrderDTOBuilder setOrder_no(Long order_no) {
-            this.order_no = order_no;
-            return this;
-        }
-
-        public OrderDTOBuilder setTotal_price(Long total_price) {
-            this.total_price = total_price;
-            return this;
-        }
-
-        public OrderDTOBuilder setStatus(String status) {
-            this.status = status;
-            return this;
-        }
-
-        public OrderDTOBuilder setDestination(String destination) {
-            this.destination = destination;
-            return this;
-        }
-
-        public OrderDTOBuilder setUserDTO(UserDTO userDTO) {
-            this.userDTO = userDTO;
-            return this;
-        }
-
-        public OrderDTOBuilder setProducts(List<OrderProduct> products) {
-            this.products = products;
-            return this;
-        }
-        public OrderDTO createOrderDTO(){
-            return new OrderDTO(order_id,order_no,total_price,status,destination);
-        }
+    public void setOrder_id(Long order_id) {
+        this.order_id = order_id;
     }
 
+    public void setOrder_no(Long order_no) {
+        this.order_no = order_no;
+    }
+
+    public void setTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+    public void setProducts(List<OrderProduct> products) {
+        this.products = products;
+    }
 }
