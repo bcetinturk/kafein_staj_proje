@@ -35,6 +35,8 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<BasketProduct> baskets = new ArrayList<>();
 
+    public Product() {
+    }
 
     public Product(Long id, String procudt_name, long product_price, int product_quantity, String description, Category category) {
         this.id = id;

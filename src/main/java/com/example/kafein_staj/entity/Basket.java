@@ -18,6 +18,9 @@ public class Basket {
     @OneToMany(mappedBy = "basket")
     private List<BasketProduct> products = new ArrayList<>();
 
+    public Basket() {
+    }
+
     public Basket(Long basket_id, User user) {
         this.basketId = basket_id;
         this.user = user;
