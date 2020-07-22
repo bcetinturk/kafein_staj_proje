@@ -51,56 +51,35 @@ public class UserDTO {
         return role;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public static class UserDTOBuilder {
-        private Long id;
-        private String firstName;
-        private String lastName;
-        private String email;
-        private String phone;
-        private String address;
-        private Role role;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-        public UserDTOBuilder setId(Long id) {
-            this.id = id;
-            return this;
-        }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-        public UserDTOBuilder setFirstName(String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        public UserDTOBuilder setLastName(String lastName) {
-            this.lastName = lastName;
-            return this;
-        }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-        public UserDTOBuilder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-        public UserDTOBuilder setPhone(String phone) {
-            this.phone = phone;
-            return this;
-        }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-        public UserDTOBuilder setAddress(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public UserDTOBuilder setRole(Role role) {
-            this.role = role;
-            return this;
-        }
-
-        public UserDTO createUserDTO(){
-            return new UserDTO(id, firstName, lastName, email, phone, address, role);
-        }
+    public Long getId() {
+        return id;
     }
 }
