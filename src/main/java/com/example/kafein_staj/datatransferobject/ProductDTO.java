@@ -27,18 +27,19 @@ public class ProductDTO   {
 
     private String description;
 
-    private Category category;
+    private CategoryDTO categoryDTO;
     private List<OrderProduct> orders =  new ArrayList<>();
     private List<BasketProduct> baskets = new ArrayList<>();
 
     public ProductDTO(){}
 
-    public ProductDTO(Long prodcut_id, String productName, long price, int quantity, String description) {
+    public ProductDTO(Long prodcut_id, String productName, long price, int quantity, String description,CategoryDTO categoryDTO) {
         this.product_id = prodcut_id;
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
         this.description = description;
+        this.categoryDTO=categoryDTO;
     }
 
     @JsonProperty
@@ -51,7 +52,7 @@ public class ProductDTO   {
 
     public int getQuantity() { return quantity; }
 
-    public Category getCategory() { return category; }
+    public CategoryDTO getCategoryDTO() { return categoryDTO; }
 
     public List<OrderProduct> getOrders() { return orders; }
 
@@ -61,62 +62,35 @@ public class ProductDTO   {
         return description;
     }
 
-    public static class ProductDTOBuilder{
-        private Long product_id;
-        private String productName;
-        private int quantity;
-        private String description;
-        private long price;
-        private Category category;
-        private List<OrderProduct> orders =  new ArrayList<>();
-        private List<BasketProduct> baskets = new ArrayList<>();
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
+    }
 
-        public ProductDTOBuilder(Long product_id, String productName, int quantity, String description, long price) {
-            this.product_id = product_id;
-            this.productName = productName;
-            this.quantity = quantity;
-            this.description = description;
-            this.price = price;
-        }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-        public ProductDTOBuilder setProduct_id(Long product_id) {
-            this.product_id = product_id;
-            return this;
-        }
+    public void setPrice(long price) {
+        this.price = price;
+    }
 
-        public ProductDTOBuilder setProductName(String productName) {
-            this.productName = productName;
-            return  this;
-        }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-        public ProductDTOBuilder setQuantity(int quantity) {
-            this.quantity = quantity;
-            return this;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public ProductDTOBuilder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
+    public void setCategory(CategoryDTO categoryDTO) {
+        this.categoryDTO = categoryDTO;
+    }
 
-        public ProductDTOBuilder setPrice(long price) {
-            this.price = price;
-            return this;
-        }
+    public void setOrders(List<OrderProduct> orders) {
+        this.orders = orders;
+    }
 
-        public ProductDTOBuilder setCategory(Category category) {
-            this.category = category;
-            return this;
-        }
-
-        public ProductDTOBuilder setOrders(List<OrderProduct> orders) {
-            this.orders = orders;
-            return this;
-        }
-
-        public ProductDTOBuilder setBaskets(List<BasketProduct> baskets) {
-            this.baskets = baskets;
-            return this;
-        }
+    public void setBaskets(List<BasketProduct> baskets) {
+        this.baskets = baskets;
     }
 }
