@@ -31,6 +31,6 @@ public class CategoryController {
       categoryService.deleteCategoryById(id);
     }
     @PostMapping("/category/newProduct")
-    void addNewProduct(@Valid @RequestBody CategoryDTO categoryDTO) throws EntityAlreadyExists {
+    void addNewCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws EntityAlreadyExists {
         categoryService.addNewCategory(categoryMapper.makeCategoryFromDTO(categoryDTO));    }
 }

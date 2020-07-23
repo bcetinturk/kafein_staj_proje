@@ -6,6 +6,7 @@ import com.example.kafein_staj.datatransferobject.ProductDTO;
 import com.example.kafein_staj.datatransferobject.UserDTO;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.service.order.OrderService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ public class OrderController {
     public OrderController(OrderService orderService) {this.orderService = orderService; }
 
 
-
     @GetMapping("/order/{id}")
     OrderDTO getProduct(@PathVariable Long order_id) throws EntityNotFoundException {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
@@ -31,11 +31,12 @@ public class OrderController {
         orderService.deleteById(order_id);
 
     }
-
-    @PatchMapping("/order/{id}")
+    @PutMapping("/order/{id}")
     void updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable String newStatus) throws EntityNotFoundException {
         orderService.updateOrderStatus(orderMapper.makeOrderFromDTO(orderDTO), newStatus);
-
         }
 
+    void cancelledOrder(OrderDTO orderDTO) throws EntityNotFoundException{
+        orderService.cancelledOrder(orderMapper.makeOrderFromDTO(orderDTO));
+    }
 }
