@@ -2,6 +2,8 @@ package com.example.kafein_staj.controller.mapper;
 
 import com.example.kafein_staj.datatransferobject.ProductDTO;
 import com.example.kafein_staj.entity.Product;
+import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapper;
 
 @Mapper
 public interface ProductMapper {
