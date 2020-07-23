@@ -8,6 +8,9 @@ import org.mapstruct.Mappings;
 
 @Mapper
 public interface UserMapper {
+    @Mapping(target = "phone", source = "phoneNumber")
     UserDTO userToUserDTO(User userEntity);
+
+    @Mapping(target = "phoneNumber", source = "phone")
     User userDTOToUser(UserDTO userDTO);
 }
