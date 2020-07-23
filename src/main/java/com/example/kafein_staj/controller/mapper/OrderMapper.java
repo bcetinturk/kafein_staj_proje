@@ -4,6 +4,7 @@ import com.example.kafein_staj.datatransferobject.OrderDTO;
 import com.example.kafein_staj.datatransferobject.ProductDTO;
 import com.example.kafein_staj.entity.Order;
 import com.example.kafein_staj.entity.Product;
+import org.mapstruct.Mapper;
 
 @Mapper
 public interface OrderMapper {
