@@ -1,7 +1,9 @@
 package com.example.kafein_staj.controller;
 
+import com.example.kafein_staj.controller.mapper.BasketProductMapper;
 import com.example.kafein_staj.controller.mapper.UserMapper;
 import com.example.kafein_staj.datatransferobject.BasketDTO;
+import com.example.kafein_staj.datatransferobject.BasketProductDTO;
 import com.example.kafein_staj.datatransferobject.UserDTO;
 import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.User;
@@ -20,6 +22,7 @@ public class UserController {
     private UserService userService;
     private BasketService basketService;
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    private BasketProductMapper basketProductMapper = Mappers.getMapper(BasketProductMapper.class);
 
     @Autowired
     public UserController(UserService userService, BasketService basketService) {
@@ -41,6 +44,16 @@ public class UserController {
     void registerUser(@RequestBody UserDTO userDto) throws EntityAlreadyExists {
         System.out.println(userDto);
         userService.register(userMapper.userDTOToUser(userDto));
+    }
+
+    @PostMapping("/user/{userId}/basket")
+    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) throws EntityAlreadyExists {
+        basketService.addItemToBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO));
+    }
+
+    @DeleteMapping("/user/{userId}/basket")
+    void deleteItemFromBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) throws EntityNotFoundException {
+        basketService.deleteItemFromBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO));
     }
 
     @DeleteMapping("/user/{id}")

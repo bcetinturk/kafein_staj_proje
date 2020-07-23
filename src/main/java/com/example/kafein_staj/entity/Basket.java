@@ -9,7 +9,7 @@ import java.util.List;
 public class Basket {
     @Id
     @GeneratedValue
-    private Long basketId;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -22,16 +22,16 @@ public class Basket {
     }
 
     public Basket(Long basket_id, User user) {
-        this.basketId = basket_id;
+        this.id = basket_id;
         this.user = user;
     }
 
-    public Long getBasketId() {
-        return basketId;
+    public Long getId() {
+        return id;
     }
 
-    public void setBasketId(Long basket_id) {
-        this.basketId = basket_id;
+    public void setId(Long basket_id) {
+        this.id = basket_id;
     }
 
     public User getUser() {

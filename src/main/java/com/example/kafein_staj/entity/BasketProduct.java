@@ -4,15 +4,19 @@ import javax.persistence.*;
 
 @Entity
 public class BasketProduct {
-    @EmbeddedId
-    private BasketProductId id;
+//    @EmbeddedId
+//    private BasketProductId id;
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @ManyToOne
-    @MapsId("basketId")
+    @JoinColumn(name = "basket_id")
     private Basket basket;
 
     @ManyToOne
-    @MapsId("productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "amount")
@@ -25,14 +29,14 @@ public class BasketProduct {
         this.basket = basket;
         this.product = product;
         this.amount = amount;
-        this.id = new BasketProductId(basket.getBasketId(), product.getId());
+//        this.id = new BasketProductId(basket.getId(), product.getId());
     }
 
-    public BasketProductId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BasketProductId id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
