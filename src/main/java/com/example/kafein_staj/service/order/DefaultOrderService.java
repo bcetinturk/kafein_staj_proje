@@ -2,6 +2,7 @@ package com.example.kafein_staj.service.order;
 
 import com.example.kafein_staj.entity.Order;
 import com.example.kafein_staj.entity.OrderProduct;
+import com.example.kafein_staj.entity.Product;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.repository.OrderProductRepository;
@@ -33,16 +34,6 @@ public class DefaultOrderService implements OrderService {
 
     }
 
-    @Override
-    public void updateOrderStatus(Order order,String newStatus) throws EntityNotFoundException {
-       long order_id=order.getOrderId();
-        if(orderRepository.findById(order_id).isPresent()){//bana verilen order mevcut mu kontrol ediyorum
-            order.setStatus(newStatus); // eğer öyle bir order varsa order'ın yeni durumunu update ediyorum.
-        }else
-        {
-            throw new EntityNotFoundException("Order with "+ order_id+ "does not exists");
-        }
-    }
 
 
     @Override
@@ -72,6 +63,42 @@ public class DefaultOrderService implements OrderService {
             throw new EntityNotFoundException("Order does not exist");
         } else {
             return products;
+        }
+
+    }
+
+    @Override
+    public void changeQuantity(Order order) {
+        int newAmount;
+        int totalProduct = 0;
+        List<OrderProduct> productsList;
+        productsList = order.getProducts(); //bana verilen siparişin ürünlerini aldım
+        for (OrderProduct p : productsList) {
+            for (int i=1;i<productsList.size();i++) {
+                if (p.getId().equals(productsList.get(i).getId())){
+                    totalProduct++;//aynı olan ürünlerin kaç tane olduğunu buldum
+                }
+            }
+            newAmount=p.getAmount()-totalProduct; // eski stokdan sipariş verilen miktarı çıkartıp
+            p.setAmount(newAmount);                 // yeni stok durumunu kaydettim.
+            totalProduct = 0;
+
+        }
+    }
+
+    @Override
+    public void updateOrderStatus(Order order,String newStatus) throws EntityNotFoundException {
+        long order_id=order.getOrderId();
+        if(orderRepository.findById(order_id).isPresent()){
+           if(newStatus.equals("Kargoya verildi")){
+               changeQuantity(order);
+               order.setStatus(newStatus);
+           }else{
+               order.setStatus(newStatus);
+           }
+        }else
+        {
+            throw new EntityNotFoundException("Order with "+ order_id+ "does not exists");
         }
     }
 }

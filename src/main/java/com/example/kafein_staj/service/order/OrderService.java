@@ -14,4 +14,5 @@ public interface OrderService {
     void deleteById(Long order_id) throws EntityNotFoundException;
     List<Order> getAllOrdersByCustomer(Long customer_id) throws EntityNotFoundException;
     List<OrderProduct> getAllProducts(Long orderId) throws EntityNotFoundException;
+    void changeQuantity(Order order);
 }
