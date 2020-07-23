@@ -15,4 +15,5 @@ public interface OrderService {
     List<Order> getAllOrdersByCustomer(Long customer_id) throws EntityNotFoundException;
     List<OrderProduct> getAllProducts(Long orderId) throws EntityNotFoundException;
     void changeQuantity(Order order);
+    void cancelledOrder(Order order) throws EntityNotFoundException;
 }

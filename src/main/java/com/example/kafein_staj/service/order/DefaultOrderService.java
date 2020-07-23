@@ -101,4 +101,18 @@ public class DefaultOrderService implements OrderService {
             throw new EntityNotFoundException("Order with "+ order_id+ "does not exists");
         }
     }
+
+    @Override
+    public void cancelledOrder(Order order) throws EntityNotFoundException {
+        String orderStatus=order.getStatus();
+        if( orderRepository.existsById(order.getOrderId())){
+        if(orderStatus.equals("Sipariş Hazırlanıyor") ){
+           this.deleteById(order.getOrderId());
+        }
+     }else{
+            throw new EntityNotFoundException("order with "+order.getOrderId()+" does not exists");
+
+        }
+    }
+
 }
