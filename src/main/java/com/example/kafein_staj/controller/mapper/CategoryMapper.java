@@ -6,23 +6,9 @@ import com.example.kafein_staj.entity.Category;
 import com.example.kafein_staj.entity.Order;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
-public class CategoryMapper {
-    public CategoryDTO makeDTOFromCategory(Category category){
-        CategoryDTO categoryDTO=new CategoryDTO();
-        categoryDTO.setCategory_parent_id(category.getCategoryParentId());
-        categoryDTO.setCategoryId(category.getCategoryId());
-        categoryDTO.setTitle(category.getTitle());
-        return categoryDTO;
-    }
-    public Category makeCategoryFromDTO(CategoryDTO categoryDTO){
-
-        Category category=new Category();
-        category.setCategoryId(categoryDTO.getCategoryId());
-        category.setCategoryParentId(categoryDTO.getCategory_parent_id());
-        category.setTitle(categoryDTO.getTitle());
-        return category;
-
-    }
+@Mapper
+public interface CategoryMapper {
+    CategoryDTO makeDTOFromCategory(Category category); // from Entity to DTO
+    Category makeCategoryFromDTO(CategoryDTO categoryDTO); // from DTO to Entity
 
 }
