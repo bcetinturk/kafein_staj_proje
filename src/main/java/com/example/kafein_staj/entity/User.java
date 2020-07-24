@@ -1,5 +1,7 @@
 package com.example.kafein_staj.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -33,7 +35,7 @@ public class User {
     @Enumerated
     private Role role;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Basket basket;
 
     public User() {
@@ -44,7 +46,7 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role) {
+    public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role, Basket basket) {
        this.id = id;
         this.firstName = firstName;
         this.lastName = user_lastname;
@@ -117,5 +119,19 @@ public class User {
 
     public void setBasket(Basket basket) {
         this.basket = basket;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", role=" + role +
+                ", basket=" + basket +
+                '}';
     }
 }
