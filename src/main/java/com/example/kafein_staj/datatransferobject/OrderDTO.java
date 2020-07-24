@@ -1,8 +1,6 @@
 package com.example.kafein_staj.datatransferobject;
 
-import com.example.kafein_staj.entity.Order;
 import com.example.kafein_staj.entity.OrderProduct;
-import com.example.kafein_staj.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,18 +21,18 @@ public class OrderDTO {
 
     @NotNull(message = "destination can not be null!")
     private String destination;
-    private UserDTO userDTO;
+    private Long userDTO_id;
     private List<OrderProduct> products = new ArrayList<>(); // Daha sonra DTO olacak
 
     public  OrderDTO(){}
 
-    public OrderDTO(Long order_id, Long order_no, Long totalPrice, String status, String destination,UserDTO userDTO) {
+    public OrderDTO(Long order_id, Long order_no, Long totalPrice, String status, String destination, Long userDTO_id) {
         this.order_id = order_id;
         this.order_no = order_no;
         this.totalPrice = totalPrice;
         this.status = status;
         this.destination = destination;
-        this.userDTO=userDTO;
+        this.userDTO_id = userDTO_id;
     }
     @JsonProperty
 
@@ -42,9 +40,7 @@ public class OrderDTO {
         return order_id;
     }
 
-    public Long getOrderNo() {
-        return order_no;
-    }
+    public Long getOrder_no() { return order_no; }
 
     public Long getTotalPrice() {
         return totalPrice;
@@ -58,8 +54,8 @@ public class OrderDTO {
         return destination;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public Long getUserDTO_id() {
+        return userDTO_id;
     }
 
     public List<OrderProduct> getProducts() {
@@ -86,8 +82,8 @@ public class OrderDTO {
         this.destination = destination;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUserDTO_id(Long userDTO_id) {
+        this.userDTO_id = userDTO_id;
     }
 
     public void setProducts(List<OrderProduct> products) {

@@ -1,8 +1,5 @@
 package com.example.kafein_staj.datatransferobject;
 
-
-import com.example.kafein_staj.entity.BasketProduct;
-import com.example.kafein_staj.entity.Category;
 import com.example.kafein_staj.entity.OrderProduct;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,19 +24,19 @@ public class ProductDTO   {
 
     private String description;
 
-    private CategoryDTO categoryDTO;
+    private Long categoryDTO_id;
     private List<OrderProduct> orders =  new ArrayList<>();
-    private List<BasketProduct> baskets = new ArrayList<>();
+    private List<BasketProductDTO> baskets = new ArrayList<>();
 
     public ProductDTO(){}
 
-    public ProductDTO(Long prodcut_id, String productName, long price, int quantity, String description,CategoryDTO categoryDTO) {
+    public ProductDTO(Long prodcut_id, String productName, long price, int quantity, String description, Long categoryDTO_id) {
         this.product_id = prodcut_id;
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
         this.description = description;
-        this.categoryDTO=categoryDTO;
+        this.categoryDTO_id = categoryDTO_id;
     }
 
     @JsonProperty
@@ -52,15 +49,18 @@ public class ProductDTO   {
 
     public int getQuantity() { return quantity; }
 
-    public CategoryDTO getCategoryDTO() { return categoryDTO; }
+
 
     public List<OrderProduct> getOrders() { return orders; }
 
-    public List<BasketProduct> getBaskets() { return baskets; }
+    public List<BasketProductDTO> getBaskets() { return baskets; }
 
     public String getDescription() {
         return description;
     }
+
+    public Long getCategoryDTO_id() { return categoryDTO_id; }
+
 
     public void setProduct_id(Long product_id) {
         this.product_id = product_id;
@@ -82,15 +82,14 @@ public class ProductDTO   {
         this.description = description;
     }
 
-    public void setCategory(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
-    }
+
+    public void setCategoryDTO_id(Long categoryDTO_id) {this.categoryDTO_id = categoryDTO_id; }
 
     public void setOrders(List<OrderProduct> orders) {
         this.orders = orders;
     }
 
-    public void setBaskets(List<BasketProduct> baskets) {
+    public void setBaskets(List<BasketProductDTO> baskets) {
         this.baskets = baskets;
     }
 }
