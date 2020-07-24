@@ -9,6 +9,7 @@ import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.exception.NotEnoughStockException;
 import com.example.kafein_staj.service.basket.BasketService;
 import com.example.kafein_staj.service.user.UserService;
 import org.mapstruct.factory.Mappers;
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{userId}/basket")
-    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) throws EntityAlreadyExists {
+    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) throws EntityAlreadyExists, NotEnoughStockException {
         basketService.addItemToBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO));
     }
 
