@@ -2,6 +2,7 @@ package com.example.kafein_staj.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -15,6 +16,9 @@ public class Category {
     @Column(nullable = false)
     @NotNull(message = "title can not be null!")
     private String title;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 
     public Category() {
     }
@@ -47,6 +51,15 @@ public class Category {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryParentId=" + categoryParentId +
+                ", categoryId=" + categoryId +
+                ", title='" + title + '\'' +
+                '}';
     }
 }
 
