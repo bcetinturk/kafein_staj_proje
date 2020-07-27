@@ -76,7 +76,7 @@ public class DefaultOrderService implements OrderService {
             productHaspMap.put(products.getProduct(),1);
        }else{
                amount=productHaspMap.get(products.getProduct());
-               productHaspMap.put(products.getProduct(),amount);
+               productHaspMap.put(products.getProduct(),amount+1);
             }
 
        }
