@@ -13,6 +13,6 @@ public interface BasketService {
     Basket findById(Long id) throws EntityNotFoundException;
     List<BasketDTO> findByUser_Id(Long id) throws EntityNotFoundException;
     List<BasketProduct> getAllProductsById(Long id) throws EntityNotFoundException;
-    void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException;
-    void deleteItemFromBasket(BasketProduct basketProduct) throws EntityNotFoundException;
+    void addItemToBasket(BasketProduct basketProduct, Long userId) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException;
+    void deleteItemFromBasket(BasketProduct basketProduct, Long userId) throws EntityNotFoundException;
 }

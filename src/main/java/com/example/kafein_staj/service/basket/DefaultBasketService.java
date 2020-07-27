@@ -51,10 +51,14 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException {
+    public void addItemToBasket(BasketProduct basketProduct, Long userId) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException {
         try {
-            int productQuantity = productRepository.findQuantityById(basketProduct.getProduct().getId()).orElseThrow(
-                    () -> new EntityNotFoundException(""));
+            Long productId = basketProduct.getProduct().getId();
+            int productQuantity = productRepository.findQuantityById(productId).orElseThrow(
+                    () -> new EntityNotFoundException("No product with id " + productId));
+
+            Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
+                    () -> new EntityNotFoundException("No user with id " + userId));
 
             if(basketProduct.getAmount() > productQuantity){
                 String message = "Can't add " +
@@ -67,6 +71,7 @@ public class DefaultBasketService implements BasketService {
                 throw new NotEnoughStockException(message);
 
             } else {
+                basketProduct.setBasket(basket);
                 basketProductRepository.save(basketProduct);
             }
         } catch (DataIntegrityViolationException e) {
@@ -76,10 +81,13 @@ public class DefaultBasketService implements BasketService {
 
     @Override
     @Transactional
-    public void deleteItemFromBasket(BasketProduct basketProduct) throws EntityNotFoundException {
+    public void deleteItemFromBasket(BasketProduct basketProduct, Long userId) throws EntityNotFoundException {
         try {
+            Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
+                    () -> new EntityNotFoundException("No user with id " + userId));
+
             basketProductRepository.deleteByBasket_IdAndProduct_Id(
-                    basketProduct.getBasket().getId(),
+                    basket.getId(),
                     basketProduct.getProduct().getId());
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Item already deleted from basket");
