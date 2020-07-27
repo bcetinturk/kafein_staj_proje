@@ -51,9 +51,11 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException {
+    public void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException {
         try {
-            int productQuantity = productRepository.findQuantityById(basketProduct.getProduct().getId());
+            int productQuantity = productRepository.findQuantityById(basketProduct.getProduct().getId()).orElseThrow(
+                    () -> new EntityNotFoundException(""));
+
             if(basketProduct.getAmount() > productQuantity){
                 String message = "Can't add " +
                         basketProduct.getAmount() +
@@ -63,6 +65,7 @@ public class DefaultBasketService implements BasketService {
                         productQuantity +
                         " exists in the stock";
                 throw new NotEnoughStockException(message);
+
             } else {
                 basketProductRepository.save(basketProduct);
             }

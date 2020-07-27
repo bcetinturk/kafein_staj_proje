@@ -65,11 +65,14 @@ public class UserController {
     @PostMapping("/user/{userId}/basket")
     void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) {
         try {
+            System.out.println(basketProductDTO);
             basketService.addItemToBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO));
         } catch (EntityAlreadyExists entityAlreadyExists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item(s) already added to basket");
         } catch (NotEnoughStockException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not add item more than in the stock");
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No item with " + basketProductDTO.getProduct_id() + " was found");
         }
     }
 

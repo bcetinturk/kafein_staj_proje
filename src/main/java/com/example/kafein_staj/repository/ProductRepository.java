@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface ProductRepository extends CrudRepository<Product, Long> {
     List <Product> getAllByCategory_CategoryId(Long category_id);
     @Query("select quantity from Product WHERE id = :product_id")
-    Integer findQuantityById(@Param("product_id") Long product_id);
+    Optional<Integer> findQuantityById(@Param("product_id") Long product_id);
     void deleteById(Long aLong);
 }

@@ -7,8 +7,10 @@ import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.mapstruct.factory.Mappers;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -34,5 +36,15 @@ public class CategoryController {
 
     @PostMapping("/category/new")
     void addNewCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws EntityAlreadyExists {
-        categoryService.addNewCategory(categoryMapper.makeCategoryFromDTO(categoryDTO));    }
+        categoryService.addNewCategory(categoryMapper.makeCategoryFromDTO(categoryDTO));
+    }
+
+    @PatchMapping("/category/{id}")
+    void updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable Long id){
+        try {
+            categoryService.updateCategory(categoryMapper.makeCategoryFromDTO(categoryDTO), id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category with id " + id + " does not exist");
+        }
+    }
 }

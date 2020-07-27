@@ -12,4 +12,5 @@ public interface ProductService {
     void deleteById(Long product_id) throws EntityNotFoundException;
     int findQuantityById(Long product_id) throws NoQuantityException, EntityNotFoundException;
     List<Product> findAllByCategoryId(Long category_id) throws EntityNotFoundException;
+    void updateProduct(Product product, Long product_id) throws EntityNotFoundException;
 }

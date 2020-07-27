@@ -44,6 +44,14 @@ public class DefaultCategoryService implements CategoryService{
         }catch (DataIntegrityViolationException exception){
             throw new EntityAlreadyExists("Same category already exits");
         }
+    }
 
+    @Override
+    public void updateCategory(Category updatedCategory, Long id) throws EntityNotFoundException {
+        categoryRepository.findById(id).orElseThrow(
+                ()->new EntityNotFoundException(""));
+
+        updatedCategory.setCategoryId(id);
+        categoryRepository.save(updatedCategory);
     }
 }

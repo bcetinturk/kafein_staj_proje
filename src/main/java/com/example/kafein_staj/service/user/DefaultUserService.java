@@ -1,8 +1,10 @@
 package com.example.kafein_staj.service.user;
 
+import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.repository.BasketRepository;
 import com.example.kafein_staj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,10 +15,12 @@ import org.springframework.stereotype.Service;
 public class DefaultUserService implements UserService{
     //TODO: Should add a logger
     UserRepository userRepository;
+    BasketRepository basketRepository;
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository) {
+    public DefaultUserService(UserRepository userRepository, BasketRepository basketRepository) {
         this.userRepository = userRepository;
+        this.basketRepository = basketRepository;
     }
 
     @Override
@@ -30,6 +34,9 @@ public class DefaultUserService implements UserService{
     public void register(User user) throws EntityAlreadyExists {
         try {
             userRepository.save(user);
+            Basket basket = new Basket(); // create a basket for user
+            basket.setUser(user);
+            basketRepository.save(basket);
         } catch (DataIntegrityViolationException e) {
             throw new EntityAlreadyExists("Same user with email or phone number exists");
         }

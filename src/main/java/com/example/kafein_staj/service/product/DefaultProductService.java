@@ -75,4 +75,13 @@ public class DefaultProductService implements ProductService {
            return productList;
        }
     }
+
+    @Override
+    public void updateProduct(Product updatedProduct, Long product_id) throws EntityNotFoundException {
+        productRepository.findById(product_id).orElseThrow(
+                () -> new EntityNotFoundException("Product with id " + product_id + " does not exist"));
+
+        updatedProduct.setId(product_id);
+        productRepository.save(updatedProduct);
+    }
 }

@@ -40,4 +40,13 @@ public class BasketProductDTO {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BasketProductDTO{" +
+                "basket_id=" + basket_id +
+                ", product_id=" + product_id +
+                ", amount=" + amount +
+                '}';
+    }
 }
