@@ -21,26 +21,22 @@ public class OrderController {
     public OrderController(OrderService orderService) {this.orderService = orderService; }
 
 
-    @GetMapping("/order/{id}")
-    OrderDTO getProduct(@PathVariable Long id) throws EntityNotFoundException {
-        return orderMapper.makeDTOFromOrder(orderService.findById(id));
-    }
-
+    @GetMapping("/order/{order_id}")
     OrderDTO getOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
     }
 
-    @DeleteMapping("/order/{id}")
+    @DeleteMapping("/order/{order_id}")
     void deleteOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         orderService.deleteById(order_id);
 
     }
-    @PutMapping("/order/{id}")
-    void updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable String newStatus) throws EntityNotFoundException {
+    @PutMapping("/order/{orderDTO}/status")
+    void updateOrder(@PathVariable OrderDTO orderDTO, @RequestBody String newStatus) throws EntityNotFoundException {
         orderService.updateOrderStatus(orderMapper.makeOrderFromDTO(orderDTO), newStatus);
         }
-
-    void cancelledOrder(OrderDTO orderDTO) throws EntityNotFoundException{
+    @PutMapping("/order/{orderDTO}")
+    void cancelledOrder(@PathVariable OrderDTO orderDTO) throws EntityNotFoundException{
         orderService.cancelledOrder(orderMapper.makeOrderFromDTO(orderDTO));
     }
 }

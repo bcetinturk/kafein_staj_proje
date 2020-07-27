@@ -3,17 +3,20 @@ package com.example.kafein_staj.service.category;
 import com.example.kafein_staj.entity.Category;
 import com.example.kafein_staj.entity.Product;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
+import com.example.kafein_staj.exception.UsedCategoryException;
 import com.example.kafein_staj.repository.CategoryRepository;
+import com.example.kafein_staj.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class DefaultCategoryService implements CategoryService{
-
+    ProductService productService;
     CategoryRepository categoryRepository;
     @Autowired
 
@@ -28,12 +31,25 @@ public class DefaultCategoryService implements CategoryService{
     }
 
     @Override
-    public void deleteCategoryById(Long category_id) {
+    public void deleteCategoryById(Long category_id) throws UsedCategoryException{
         try {
-            categoryRepository.deleteById(category_id);
+            boolean isExists=false;
+            List<Product> productList;
+            productList=productService.findAllByCategoryId(category_id);
+            for(Product product:productList){
+                if(product.getCategory().getCategoryId().equals(category_id)){
+                    isExists=true;
+                    break;
+                }
 
-        }catch (EmptyResultDataAccessException e){
-            throw new EntityNotFoundException("Order with "+category_id+" has already been deleted");
+            }
+            if(!isExists){
+                categoryRepository.deleteById(category_id);
+            }else throw new UsedCategoryException("category with " + category_id + " is using");
+
+
+        }catch (EmptyResultDataAccessException | com.example.kafein_staj.exception.EntityNotFoundException e){
+            throw new EntityNotFoundException("Category with "+category_id+" has already been deleted");
         }
     }
 

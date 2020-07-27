@@ -5,6 +5,7 @@ import com.example.kafein_staj.datatransferobject.CategoryDTO;
 import com.example.kafein_staj.datatransferobject.ProductDTO;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.exception.UsedCategoryException;
 import com.example.kafein_staj.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class CategoryController {
 
     }
     @DeleteMapping("/category/{id}")
-    void deleteCategory(@PathVariable Long id){
+    void deleteCategory(@PathVariable Long id)throws  UsedCategoryException {
       categoryService.deleteCategoryById(id);
     }
 
