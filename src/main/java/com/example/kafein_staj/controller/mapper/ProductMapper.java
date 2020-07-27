@@ -13,6 +13,6 @@ public interface ProductMapper {
         @Mapping(target = "product_id ", source = "id")
         ProductDTO makeDTOFromProduct(Product product); // from Entity to DTO
 
-        @Mapping(target = "product_id ", source = "id")
+        @Mapping(target = "id", source = "product_id")
         Product makeProductFromDTO(ProductDTO productDTO); // from DTO to Entity
 }

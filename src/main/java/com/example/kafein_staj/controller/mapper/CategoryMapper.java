@@ -18,8 +18,8 @@ public interface CategoryMapper {
     CategoryDTO makeDTOFromCategory(Category category); // from Entity to DTO
 
     @Mappings({
-            @Mapping(target = "category_parent_id", source = "categoryParentId"),
-            @Mapping(target = "category_id", source = "categoryId"),
+            @Mapping(target = "categoryParentId", source = "category_parent_id"),
+            @Mapping(target = "categoryId", source = "category_id"),
 
     })
     Category makeCategoryFromDTO(CategoryDTO categoryDTO); // from DTO to Entity

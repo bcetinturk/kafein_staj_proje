@@ -22,12 +22,12 @@ public class OrderController {
 
 
     @GetMapping("/order/{id}")
-    OrderDTO getProduct(@PathVariable Long order_id) throws EntityNotFoundException {
+    OrderDTO getOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
     }
 
     @DeleteMapping("/order/{id}")
-    void deleteProduct(@PathVariable Long order_id) throws EntityNotFoundException {
+    void deletePOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         orderService.deleteById(order_id);
 
     }
