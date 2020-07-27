@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.LongFunction;
 @Service
 public class DefaultOrderService implements OrderService {
@@ -69,21 +67,26 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public void changeQuantity(Order order) {
-        int newAmount;
-        int totalProduct = 0;
+        int amount;
         List<OrderProduct> productsList;
-        productsList = order.getProducts(); //bana verilen siparişin ürünlerini aldım
-        for (OrderProduct p : productsList) {
-            for (int i=1;i<productsList.size();i++) {
-                if (p.getId().equals(productsList.get(i).getId())){
-                    totalProduct++;//aynı olan ürünlerin kaç tane olduğunu buldum
-                }
+        productsList=order.getProducts();
+        HashMap<Product, Integer> productHaspMap = new HashMap<>();
+       for(OrderProduct products: productsList){
+           if(!productHaspMap.containsKey(products.getProduct())){
+            productHaspMap.put(products.getProduct(),1);
+       }else{
+               amount=productHaspMap.get(products.getProduct());
+               productHaspMap.put(products.getProduct(),amount);
             }
-            newAmount=p.getAmount()-totalProduct; // eski stokdan sipariş verilen miktarı çıkartıp
-            p.setAmount(newAmount);                 // yeni stok durumunu kaydettim.
-            totalProduct = 0;
 
-        }
+       }
+       int quantity;
+        for (Map.Entry<Product,Integer> entry: productHaspMap.entrySet()){
+            Product p=entry.getKey();
+            quantity=entry.getValue();
+            int newAmount=p.getQuantity()-quantity;
+            p.setQuantity(newAmount);
+     }
     }
 
     @Override
