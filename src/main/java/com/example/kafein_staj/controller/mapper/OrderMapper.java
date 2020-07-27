@@ -19,6 +19,7 @@ public interface OrderMapper {
     @Mappings({
             @Mapping(target = "orderId", source = "order_id"),
             @Mapping(target = "orderNo", source = "order_no")
+
     })
     Order makeOrderFromDTO(OrderDTO orderDTO); // from DTO to Entity
 }

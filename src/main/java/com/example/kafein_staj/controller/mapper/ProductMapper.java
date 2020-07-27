@@ -15,6 +15,7 @@ public interface ProductMapper {
         })
         ProductDTO makeDTOFromProduct(Product product); // from Entity to DTO
 
+
         @Mappings({
                 @Mapping(target = "id", source = "product_id"),
                 @Mapping(target = "category.categoryId", source = "categoryId")
