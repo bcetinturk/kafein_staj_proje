@@ -63,4 +63,14 @@ public class BasketProduct {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BasketProduct{" +
+                "id=" + id +
+                ", basket=" + basket +
+                ", product=" + product +
+                ", amount=" + amount +
+                '}';
+    }
 }
