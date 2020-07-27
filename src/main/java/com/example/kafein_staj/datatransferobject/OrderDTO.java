@@ -22,7 +22,7 @@ public class OrderDTO {
     @NotNull(message = "destination can not be null!")
     private String destination;
     private Long userDTO_id;
-    private List<OrderProduct> products = new ArrayList<>(); // Daha sonra DTO olacak
+    private List<OrderProduct> products = new ArrayList<>();
 
     public  OrderDTO(){}
 
