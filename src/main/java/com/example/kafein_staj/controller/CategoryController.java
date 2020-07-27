@@ -12,6 +12,7 @@ import org.mapstruct.factory.Mappers;
 
 import javax.validation.Valid;
 
+@RestController
 public class CategoryController {
     CategoryService categoryService;
 
@@ -22,15 +23,16 @@ public class CategoryController {
     private CategoryMapper categoryMapper=  Mappers.getMapper(CategoryMapper.class);
 
     @GetMapping("/category/{id}")
-    CategoryDTO getCategory(@PathVariable Long category_id) {
-        return  categoryMapper.makeDTOFromCategory(categoryService.findById(category_id));
+    CategoryDTO getCategory(@PathVariable Long id) {
+        return  categoryMapper.makeDTOFromCategory(categoryService.findById(id));
 
     }
     @DeleteMapping("/category/{id}")
     void deleteCategory(@PathVariable Long id){
       categoryService.deleteCategoryById(id);
     }
-    @PostMapping("/category/newProduct")
+
+    @PostMapping("/category/new")
     void addNewCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws EntityAlreadyExists {
         categoryService.addNewCategory(categoryMapper.makeCategoryFromDTO(categoryDTO));    }
 }

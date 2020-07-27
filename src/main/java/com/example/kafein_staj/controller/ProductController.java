@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 public class ProductController {
     ProductService productService;
-   private ProductMapper productMapper= Mappers.getMapper(ProductMapper.class);
+    private ProductMapper productMapper= Mappers.getMapper(ProductMapper.class);
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -24,23 +24,22 @@ public class ProductController {
 
 
     @GetMapping("/product/{id}")
-    ProductDTO getProduct(@PathVariable Long product_id) throws EntityNotFoundException {
-        return productMapper.makeDTOFromProduct(productService.findById(product_id));
+    ProductDTO getProduct(@PathVariable Long id) throws EntityNotFoundException {
+        return productMapper.makeDTOFromProduct(productService.findById(id));
             }
 
-    @PostMapping("/product/newProduct")
+    @PostMapping("/product/new")
     void addNewProduct(@Valid @RequestBody ProductDTO productDTO) throws EntityAlreadyExists {
         productService.addNewProduct(productMapper.makeProductFromDTO(productDTO));
     }
 
     @DeleteMapping("/product/{id}")
-    void deleteProduct(@PathVariable Long product_id) throws EntityNotFoundException {
-       productService.deleteById(product_id);
+    void deleteProduct(@PathVariable Long id) throws EntityNotFoundException {
+       productService.deleteById(id);
 
     }
+
     void getProductQuantity(ProductDTO productDTO) throws NoQuantityException,EntityNotFoundException {
         productService.findQuantityById(productDTO.getProduct_id());
     }
-
-
 }

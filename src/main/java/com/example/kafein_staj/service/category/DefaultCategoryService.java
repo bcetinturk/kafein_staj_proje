@@ -38,14 +38,12 @@ public class DefaultCategoryService implements CategoryService{
     }
 
     @Override
-    public Category addNewCategory(Category newCategory) throws EntityAlreadyExists {
-        Category category;
+    public void addNewCategory(Category newCategory) throws EntityAlreadyExists {
         try {
-            category=categoryRepository.save(newCategory);
-
+            categoryRepository.save(newCategory);
         }catch (DataIntegrityViolationException exception){
             throw new EntityAlreadyExists("Same category already exits");
         }
-        return category;
+
     }
 }
