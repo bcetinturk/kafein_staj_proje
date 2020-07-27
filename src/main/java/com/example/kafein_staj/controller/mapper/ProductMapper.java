@@ -9,10 +9,15 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface ProductMapper {
-
-        @Mapping(target = "product_id ", source = "id")
+        @Mappings({
+                @Mapping(target = "product_id", source = "id"),
+                @Mapping(target = "categoryId", source = "category.categoryId")
+        })
         ProductDTO makeDTOFromProduct(Product product); // from Entity to DTO
 
-        @Mapping(target = "product_id ", source = "id")
+        @Mappings({
+                @Mapping(target = "id", source = "product_id"),
+                @Mapping(target = "category.categoryId", source = "categoryId")
+        })
         Product makeProductFromDTO(ProductDTO productDTO); // from DTO to Entity
 }

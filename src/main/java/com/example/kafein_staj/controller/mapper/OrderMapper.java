@@ -12,15 +12,13 @@ import org.mapstruct.Mappings;
 public interface OrderMapper {
     @Mappings({
             @Mapping(target = "order_id", source = "orderId"),
-            @Mapping(target = "order_no", source = "orderNo"),
-
+            @Mapping(target = "order_no", source = "orderNo")
     })
     OrderDTO makeDTOFromOrder(Order order); // from Entity to DTO
 
     @Mappings({
-            @Mapping(target = "order_id", source = "orderId"),
-            @Mapping(target = "order_no", source = "orderNo"),
-
+            @Mapping(target = "orderId", source = "order_id"),
+            @Mapping(target = "orderNo", source = "order_no")
     })
     Order makeOrderFromDTO(OrderDTO orderDTO); // from DTO to Entity
 }

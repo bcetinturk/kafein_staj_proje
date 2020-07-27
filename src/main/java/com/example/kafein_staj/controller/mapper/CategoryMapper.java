@@ -11,16 +11,12 @@ import org.mapstruct.Mappings;
 @Mapper
 public interface CategoryMapper {
     @Mappings({
-            @Mapping(target = "category_parent_id", source = "categoryParentId"),
-            @Mapping(target = "category_id", source = "categoryId"),
-
+            @Mapping(target = "parentId", source = "categoryParentId")
     })
     CategoryDTO makeDTOFromCategory(Category category); // from Entity to DTO
 
     @Mappings({
-            @Mapping(target = "category_parent_id", source = "categoryParentId"),
-            @Mapping(target = "category_id", source = "categoryId"),
-
+            @Mapping(target = "categoryParentId", source = "parentId")
     })
     Category makeCategoryFromDTO(CategoryDTO categoryDTO); // from DTO to Entity
 
