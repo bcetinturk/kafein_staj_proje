@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper
+@Mapper(uses = {OrderProductMapper.class})
 public interface OrderMapper {
     @Mappings({
             @Mapping(target = "order_id", source = "orderId"),

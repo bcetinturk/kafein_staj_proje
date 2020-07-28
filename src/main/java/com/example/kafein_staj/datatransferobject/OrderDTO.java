@@ -22,7 +22,7 @@ public class OrderDTO {
     @NotNull(message = "destination can not be null!")
     private String destination;
     private Long userDTO_id;
-    private List<OrderProduct> products = new ArrayList<>();
+    private List<OrderProductDTO> products = new ArrayList<>();
 
     public  OrderDTO(){}
 
@@ -58,7 +58,7 @@ public class OrderDTO {
         return userDTO_id;
     }
 
-    public List<OrderProduct> getProducts() {
+    public List<OrderProductDTO> getProducts() {
         return products;
     }
 
@@ -86,7 +86,7 @@ public class OrderDTO {
         this.userDTO_id = userDTO_id;
     }
 
-    public void setProducts(List<OrderProduct> products) {
+    public void setProducts(List<OrderProductDTO> products) {
         this.products = products;
     }
 }

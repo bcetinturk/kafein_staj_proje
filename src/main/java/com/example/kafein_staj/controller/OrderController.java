@@ -20,21 +20,26 @@ public class OrderController {
     @Autowired
     public OrderController(OrderService orderService) {this.orderService = orderService; }
 
-
     @GetMapping("/order/{order_id}")
     OrderDTO getOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
     }
 
+    @PostMapping("/order/new")
+    OrderDTO placeNewOrder(){
+        return null;
+    }
+
     @DeleteMapping("/order/{order_id}")
     void deleteOrder(@PathVariable Long order_id) throws EntityNotFoundException {
         orderService.deleteById(order_id);
-
     }
+
     @PutMapping("/order/{orderDTO}/status")
     void updateOrder(@PathVariable OrderDTO orderDTO, @RequestBody String newStatus) throws EntityNotFoundException {
         orderService.updateOrderStatus(orderMapper.makeOrderFromDTO(orderDTO), newStatus);
-        }
+    }
+
     @PutMapping("/order/{orderDTO}")
     void cancelledOrder(@PathVariable OrderDTO orderDTO) throws EntityNotFoundException{
         orderService.cancelledOrder(orderMapper.makeOrderFromDTO(orderDTO));
