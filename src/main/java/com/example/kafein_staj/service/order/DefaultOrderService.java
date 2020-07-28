@@ -76,24 +76,14 @@ public class DefaultOrderService implements OrderService {
 
     @Override
     public void changeQuantity(Order order) {
-        int amount;
-        List<OrderProduct> productsList;
-        productsList = order.getProducts();
-        HashMap<Product, Integer> productHaspMap = new HashMap<>();
-        for (OrderProduct products : productsList) {
-            if (!productHaspMap.containsKey(products.getProduct())) {
-                productHaspMap.put(products.getProduct(), 1);
-            } else {
-                amount = productHaspMap.get(products.getProduct());
-                productHaspMap.put(products.getProduct(), amount + 1);
-            }
-        }
-        int quantity;
-        for (Map.Entry<Product, Integer> entry : productHaspMap.entrySet()) {
-            Product p = entry.getKey();
-            quantity = entry.getValue();
-            int newAmount = p.getQuantity() - quantity;
-            p.setQuantity(newAmount);
+
+        List<OrderProduct> productList = order.getProducts();
+        for(OrderProduct orderProduct: productList) {
+            int currentQuantity = orderProduct.getProduct().getQuantity();
+            int orderQuantity = orderProduct.getAmount();
+            Product product = orderProduct.getProduct();
+            product.setQuantity(currentQuantity - orderQuantity);
+            productRepository.save(product);
         }
     }
 
@@ -105,9 +95,9 @@ public class DefaultOrderService implements OrderService {
         String newStatus = orderDto.getStatus();
         if(newStatus.equals("Shipped") && order.getStatus().equals("Preparing")) {
             order.setStatus("Shipped");
+            changeQuantity(order);
         } else if(newStatus.equals("Delivered") && order.getStatus().equals("Shipped")) {
             order.setStatus("Delivered");
-            //TODO: decrease product amount from stock
         } else if(newStatus.equals("Cancelled") && order.getStatus().equals("Preparing")) {
             order.setStatus("Cancelled");
         } else {
@@ -137,10 +127,8 @@ public class DefaultOrderService implements OrderService {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(""));
         // 2.  Get user's basket
         Basket basket = user.getBasket();
-        System.out.println(basket);
         // 3.  Get all products in basket (get price amount name)
         List<BasketProduct> products = basket.getProducts();
-        System.out.println(products);
         // 4.  Create new order
         Order order = new Order();
         // 5.  Set destination (user address)
@@ -150,7 +138,6 @@ public class DefaultOrderService implements OrderService {
         for (BasketProduct basketProduct : products) {
             total += basketProduct.getProduct().getPrice() * basketProduct.getAmount();
         }
-        System.out.println(total);
         order.setTotalPrice(total);
         // 7.  Set status
         order.setStatus("Preparing");
