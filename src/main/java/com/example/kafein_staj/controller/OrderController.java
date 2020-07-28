@@ -25,9 +25,9 @@ public class OrderController {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
     }
 
-    @PostMapping("/order/new")
-    OrderDTO placeNewOrder(){
-        return null;
+    @PostMapping("/user/{userId}/order/new")
+    OrderDTO placeNewOrder(@PathVariable Long userId) throws EntityNotFoundException {
+        return orderMapper.makeDTOFromOrder(orderService.newOrder(userId));
     }
 
     @DeleteMapping("/order/{order_id}")

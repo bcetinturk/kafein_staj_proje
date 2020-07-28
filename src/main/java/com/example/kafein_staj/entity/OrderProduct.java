@@ -5,15 +5,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "order_product")
 public class OrderProduct {
-    @EmbeddedId
-    private OrderProductId id;
+//    @EmbeddedId
+//    private OrderProductId id;
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @ManyToOne
-    @MapsId("orderId")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
-    @MapsId("productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "amount")
@@ -25,15 +29,15 @@ public class OrderProduct {
     public OrderProduct(Order order, Product product, int amount) {
         this.order = order;
         this.product = product;
-        this.id = new OrderProductId(order.getOrderId(), product.getId());
+        //this.id = new OrderProductId(order.getOrderId(), product.getId());
         this.amount = amount;
     }
 
-    public OrderProductId getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(OrderProductId id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

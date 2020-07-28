@@ -1,12 +1,10 @@
 package com.example.kafein_staj.service.order;
 
-import com.example.kafein_staj.entity.Order;
-import com.example.kafein_staj.entity.OrderProduct;
-import com.example.kafein_staj.entity.Product;
-import com.example.kafein_staj.entity.User;
+import com.example.kafein_staj.entity.*;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.repository.OrderProductRepository;
 import com.example.kafein_staj.repository.OrderRepository;
+import com.example.kafein_staj.repository.ProductRepository;
 import com.example.kafein_staj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,10 +17,18 @@ public class DefaultOrderService implements OrderService {
    private OrderRepository orderRepository;
    private UserRepository userRepository;
    private OrderProductRepository orderProductRepository;
+   private ProductRepository productRepository;
+
     @Autowired
-    public DefaultOrderService(OrderRepository orderRepository, OrderProductRepository orderProductRepository) {
+    public DefaultOrderService(
+            OrderRepository orderRepository,
+            OrderProductRepository orderProductRepository,
+            UserRepository userRepository,
+            ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderProductRepository = orderProductRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -118,4 +124,47 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
+
+    @Override
+    public Order newOrder(Long userId) throws EntityNotFoundException{
+        // 1.  Get user
+        User user = userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException(""));
+        // 2.  Get user's basket
+        Basket basket = user.getBasket();
+        // 3.  Get all products in basket (get price amount name)
+        List<BasketProduct> products = basket.getProducts();
+        // 4.  Create new order
+        Order order = new Order();
+        // 5.  Set destination (user address)
+        order.setDestination(user.getAddress());
+        // 6.  calculate total
+        long total = 0;
+        for(BasketProduct basketProduct : products){
+            total += basketProduct.getProduct().getPrice() * basketProduct.getAmount();
+        }
+        System.out.println(total);
+        order.setTotalPrice(total);
+        // 7.  Set status
+        order.setStatus("Sipariş Hazırlanıyor");
+        // 8.  Set user id
+        order.setUser(user);
+        // 9. Set orderNo
+        order.setOrderNo(UUID.randomUUID());
+        // 10. Save order
+        order = orderRepository.save(order);
+        // 11.  For each product from basket create new OrderProduct
+        // 12. Set orderId for OrderProducts
+        // 13. Save OrderProduct
+        for(BasketProduct basketProduct : products){
+            OrderProduct orderProduct = new OrderProduct();
+
+            orderProduct.setAmount(basketProduct.getAmount());
+            orderProduct.setProduct(basketProduct.getProduct());
+            orderProduct.setOrder(order);
+
+            orderProductRepository.save(orderProduct);
+        }
+
+        return order;
+    }
 }
