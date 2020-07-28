@@ -31,8 +31,9 @@ public class ProductController {
             }
 
     @PostMapping("/product/new")
-    void addNewProduct(@Valid @RequestBody ProductDTO productDTO) throws EntityAlreadyExists {
-        productService.addNewProduct(productMapper.makeProductFromDTO(productDTO));
+    ProductDTO addNewProduct(@Valid @RequestBody ProductDTO productDTO) throws EntityAlreadyExists {
+        return productMapper.makeDTOFromProduct(
+                productService.addNewProduct(productMapper.makeProductFromDTO(productDTO)));
     }
 
     @DeleteMapping("/product/{id}")

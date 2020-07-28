@@ -6,6 +6,7 @@ import com.example.kafein_staj.datatransferobject.BasketDTO;
 import com.example.kafein_staj.datatransferobject.BasketProductDTO;
 import com.example.kafein_staj.datatransferobject.UserDTO;
 import com.example.kafein_staj.entity.Basket;
+import com.example.kafein_staj.entity.Role;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
@@ -51,12 +52,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users")
+    List<UserDTO> getUsersByRole(@RequestParam Role role){
+        return userMapper.userToDto(userService.getAllUsersByRole(role));
+    }
+
     @PostMapping("/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void registerUser(@RequestBody UserDTO userDto) {
+    UserDTO registerUser(@RequestBody UserDTO userDto) {
         System.out.println(userDto);
         try {
-            userService.register(userMapper.userDTOToUser(userDto));
+            return userMapper.userToUserDTO(
+                    userService.register(userMapper.userDTOToUser(userDto)));
         } catch (EntityAlreadyExists entityAlreadyExists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with same email or phone number already exists");
         }

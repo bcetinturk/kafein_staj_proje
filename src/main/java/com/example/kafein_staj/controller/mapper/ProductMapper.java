@@ -7,6 +7,8 @@ import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface ProductMapper {
         @Mappings({
@@ -21,4 +23,7 @@ public interface ProductMapper {
                 @Mapping(target = "category.categoryId", source = "categoryId")
         })
         Product makeProductFromDTO(ProductDTO productDTO); // from DTO to Entity
+
+        List<ProductDTO> dtosFromProducts(List<Product> products);
+        List<Product> productsFromdtos(List<ProductDTO> productDTOs);
 }

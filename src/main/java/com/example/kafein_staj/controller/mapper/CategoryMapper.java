@@ -8,16 +8,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper
 public interface CategoryMapper {
-    @Mappings({
-            @Mapping(target = "parentId", source = "categoryParentId")
-    })
+    @Mapping(target = "parentId", source = "categoryParentId")
     CategoryDTO makeDTOFromCategory(Category category); // from Entity to DTO
 
-    @Mappings({
-            @Mapping(target = "categoryParentId", source = "parentId"),
-    })
+    @Mapping(target = "categoryParentId", source = "parentId")
     Category makeCategoryFromDTO(CategoryDTO categoryDTO); // from DTO to Entity
 
+    List<CategoryDTO> dtosFromCategories(List<Category> categories);
+
+    List<Category> categoriesFromDtos(List<CategoryDTO> categoryDTOS);
 }
