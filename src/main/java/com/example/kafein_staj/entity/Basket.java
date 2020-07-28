@@ -49,4 +49,11 @@ public class Basket {
     public void setProducts(List<BasketProduct> products) {
         this.products = products;
     }
+
+    @Override
+    public String toString() {
+        return "Basket{" +
+                "id=" + id +
+                '}';
+    }
 }

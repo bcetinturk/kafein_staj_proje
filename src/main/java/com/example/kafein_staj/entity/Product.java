@@ -110,4 +110,16 @@ public class Product {
     public void setBaskets(List<BasketProduct> baskets) {
         this.baskets = baskets;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", description='" + description + '\'' +
+                ", category=" + category +
+                '}';
+    }
 }

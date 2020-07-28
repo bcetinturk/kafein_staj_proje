@@ -1,5 +1,8 @@
 package com.example.kafein_staj.datatransferobject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude
 public class OrderProductDTO {
     Integer amount;
     String product_name;

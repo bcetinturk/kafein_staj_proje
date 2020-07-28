@@ -6,8 +6,10 @@ import com.example.kafein_staj.datatransferobject.ProductDTO;
 import com.example.kafein_staj.datatransferobject.UserDTO;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.exception.IllegalOperationException;
 import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.service.order.OrderService;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,9 @@ public class OrderController {
 
     @PostMapping("/user/{userId}/order/new")
     OrderDTO placeNewOrder(@PathVariable Long userId) throws EntityNotFoundException {
-        return orderMapper.makeDTOFromOrder(orderService.newOrder(userId));
+        OrderDTO orderDTO = orderMapper.makeDTOFromOrder(orderService.newOrder(userId));
+        System.out.println(orderDTO);
+        return orderDTO;
     }
 
     @DeleteMapping("/order/{order_id}")
@@ -35,13 +39,13 @@ public class OrderController {
         orderService.deleteById(order_id);
     }
 
-    @PutMapping("/order/{orderDTO}/status")
-    void updateOrder(@PathVariable OrderDTO orderDTO, @RequestBody String newStatus) throws EntityNotFoundException {
-        orderService.updateOrderStatus(orderMapper.makeOrderFromDTO(orderDTO), newStatus);
+    @PatchMapping("/order/{order_id}/status")
+    OrderDTO updateOrder(@PathVariable Long order_id, @RequestBody OrderDTO newStatus) throws EntityNotFoundException, IllegalOperationException {
+        return orderMapper.makeDTOFromOrder(orderService.updateOrderStatus(order_id, newStatus));
     }
 
-    @PutMapping("/order/{orderDTO}")
-    void cancelledOrder(@PathVariable OrderDTO orderDTO) throws EntityNotFoundException{
-        orderService.cancelledOrder(orderMapper.makeOrderFromDTO(orderDTO));
-    }
+//    @PutMapping("/order/{orderDTO}")
+//    void cancelledOrder(@PathVariable OrderDTO orderDTO) throws EntityNotFoundException{
+//        orderService.cancelledOrder(orderMapper.makeOrderFromDTO(orderDTO));
+//    }
 }
