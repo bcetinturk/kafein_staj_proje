@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name="corder")
@@ -15,7 +14,7 @@ public class Order {
 
     @Column(nullable = false)
     @NotNull(message = "order number can not be null!")
-    private UUID orderNo;
+    private Long orderNo;
 
     @Column(nullable = false)
     @NotNull(message = "total price can not be null!")
@@ -37,7 +36,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> products = new ArrayList<>();
 
-    public Order(Long orderId, UUID orderNo, Long totalPrice, String destination, String status, User user) {
+    public Order(Long orderId, Long orderNo, Long totalPrice, String destination, String status, User user) {
         this.orderId = orderId;
         this.orderNo = orderNo;
         this.totalPrice = totalPrice;
@@ -58,11 +57,11 @@ public class Order {
         this.orderId = order_id;
     }
 
-    public UUID getOrderNo() {
+    public Long getOrderNo() {
         return orderNo;
     }
 
-    public void setOrderNo(UUID order_no) {
+    public void setOrderNo(Long order_no) {
         this.orderNo = order_no;
     }
 

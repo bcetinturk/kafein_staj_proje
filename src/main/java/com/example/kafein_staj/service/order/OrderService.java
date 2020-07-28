@@ -3,6 +3,7 @@ package com.example.kafein_staj.service.order;
 import com.example.kafein_staj.entity.Order;
 import com.example.kafein_staj.entity.OrderProduct;
 import com.example.kafein_staj.entity.User;
+import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 
 import java.util.ArrayList;
@@ -16,4 +17,5 @@ public interface OrderService {
     List<OrderProduct> getAllProducts(Long orderId) throws EntityNotFoundException;
     void changeQuantity(Order order);
     void cancelledOrder(Order order) throws EntityNotFoundException;
+    Order placeNewOrder(User user,List<OrderProduct> productList) throws EntityAlreadyExists;
 }

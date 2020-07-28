@@ -4,11 +4,13 @@ import com.example.kafein_staj.entity.Order;
 import com.example.kafein_staj.entity.OrderProduct;
 import com.example.kafein_staj.entity.Product;
 import com.example.kafein_staj.entity.User;
+import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.repository.OrderProductRepository;
 import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -118,4 +120,24 @@ public class DefaultOrderService implements OrderService {
         }
     }
 
-}
+    @Override
+    public Order placeNewOrder(User user,List<OrderProduct> productList) throws EntityAlreadyExists {
+        Order newOrder=new Order();
+        Long order_no;
+        try {
+            order_no=productList.get(productList.size()-1).getOrder().getOrderNo(); // last element order no
+            newOrder=orderRepository.save(newOrder); // save create id when call
+            newOrder.setUser(user);
+            newOrder.setProducts(productList);
+            newOrder.setDestination(user.getAddress());
+            newOrder.setStatus("Sipariş Hazırlanıyor");
+            newOrder.setOrderNo(order_no*10); //order_no create last order no * 10 for every order
+
+        }catch (DataIntegrityViolationException exception){
+            throw new EntityAlreadyExists("Same Order already exits");
+        }
+        return newOrder;
+    }
+    }
+
+

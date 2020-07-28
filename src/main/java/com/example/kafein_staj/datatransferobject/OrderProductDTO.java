@@ -2,15 +2,15 @@ package com.example.kafein_staj.datatransferobject;
 
 public class OrderProductDTO {
     Integer amount;
-    String product_name;
-    Long product_id;
+    String productName;
+    Long productId;
 
     public OrderProductDTO() {
     }
 
-    public OrderProductDTO(Integer amount, String product_name) {
+    public OrderProductDTO(Integer amount, String productName) {
         this.amount = amount;
-        this.product_name = product_name;
+        this.productName = productName;
     }
 
     public Integer getAmount() {
@@ -21,28 +21,28 @@ public class OrderProductDTO {
         this.amount = amount;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     @Override
     public String toString() {
         return "OrderProductDTO{" +
                 "amount=" + amount +
-                ", productName='" + product_name + '\'' +
-                ", productId=" + product_id +
+                ", productName='" + productName + '\'' +
+                ", productId=" + productId +
                 '}';
     }
 }

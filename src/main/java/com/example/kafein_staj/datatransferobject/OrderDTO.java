@@ -1,19 +1,19 @@
 package com.example.kafein_staj.datatransferobject;
 
+import com.example.kafein_staj.entity.OrderProduct;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
     @NotNull(message = "Order id can not be null!")
     private Long order_id;
     @NotNull(message = "order number can not be null!")
-    private UUID order_no;
+    private Long order_no;
     @NotNull(message = "total price can not be null!")
     private Long totalPrice;
     @NotNull(message = "status can not be null!")
@@ -26,7 +26,7 @@ public class OrderDTO {
 
     public  OrderDTO(){}
 
-    public OrderDTO(Long order_id, UUID order_no, Long totalPrice, String status, String destination, Long userDTO_id) {
+    public OrderDTO(Long order_id, Long order_no, Long totalPrice, String status, String destination, Long userDTO_id) {
         this.order_id = order_id;
         this.order_no = order_no;
         this.totalPrice = totalPrice;
@@ -40,7 +40,7 @@ public class OrderDTO {
         return order_id;
     }
 
-    public UUID getOrder_no() { return order_no; }
+    public Long getOrder_no() { return order_no; }
 
     public Long getTotalPrice() {
         return totalPrice;
@@ -66,7 +66,7 @@ public class OrderDTO {
         this.order_id = order_id;
     }
 
-    public void setOrder_no(UUID order_no) {
+    public void setOrder_no(Long order_no) {
         this.order_no = order_no;
     }
 

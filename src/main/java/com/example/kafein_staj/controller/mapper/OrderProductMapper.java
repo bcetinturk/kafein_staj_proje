@@ -10,14 +10,14 @@ import org.mapstruct.Mappings;
 @Mapper
 public interface OrderProductMapper {
     @Mappings({
-            @Mapping(target = "product_name", source = "product.productName"),
-            @Mapping(target = "product_id", source = "product.id")
+            @Mapping(target = "productName", source = "product.productName"),
+            @Mapping(target = "productId", source = "product.id")
     })
     OrderProductDTO toDTO(OrderProduct orderProduct);
 
     @Mappings({
-            @Mapping(target = "product.productName", source = "product_name"),
-            @Mapping(target = "product.id", source = "product_id")
+            @Mapping(target = "product.productName", source = "productName"),
+            @Mapping(target = "product.id", source = "productId")
     })
     OrderProduct toEntity(OrderProductDTO orderProductDto);
 }
