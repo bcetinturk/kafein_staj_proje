@@ -10,6 +10,7 @@ import com.example.kafein_staj.entity.Role;
 import com.example.kafein_staj.entity.User;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.exception.IllegalOperationException;
 import com.example.kafein_staj.exception.NotEnoughStockException;
 import com.example.kafein_staj.service.basket.BasketService;
 import com.example.kafein_staj.service.user.UserService;
@@ -80,6 +81,8 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not add item more than in the stock");
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product with id " + basketProductDTO.getProduct_id() + " or user with id " + userId + " does not exist");
+        } catch (IllegalOperationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not add item(s) less than zero");
         }
     }
 

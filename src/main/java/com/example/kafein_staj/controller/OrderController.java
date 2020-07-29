@@ -29,9 +29,7 @@ public class OrderController {
 
     @PostMapping("/user/{userId}/order/new")
     OrderDTO placeNewOrder(@PathVariable Long userId) throws EntityNotFoundException {
-        OrderDTO orderDTO = orderMapper.makeDTOFromOrder(orderService.newOrder(userId));
-        System.out.println(orderDTO);
-        return orderDTO;
+        return orderMapper.makeDTOFromOrder(orderService.newOrder(userId));
     }
 
     @DeleteMapping("/order/{order_id}")

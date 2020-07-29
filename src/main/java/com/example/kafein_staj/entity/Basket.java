@@ -11,11 +11,11 @@ public class Basket {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL)
     private List<BasketProduct> products = new ArrayList<>();
 
     public Basket() {

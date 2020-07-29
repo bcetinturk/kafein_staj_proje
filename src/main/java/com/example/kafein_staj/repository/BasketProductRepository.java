@@ -17,4 +17,6 @@ public interface BasketProductRepository extends CrudRepository<BasketProduct, L
     List<BasketDTO> getBasketDetails(@Param("basketId") Long basketId);
 
     void deleteByBasket_IdAndProduct_Id(Long basket_id, Long product_id);
+
+    Optional<BasketProduct> findByBasket_IdAndProduct_Id(Long basket_id, Long product_id);
 }

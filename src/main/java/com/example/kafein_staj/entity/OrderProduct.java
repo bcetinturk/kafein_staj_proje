@@ -26,7 +26,8 @@ public class OrderProduct {
     public OrderProduct() {
     }
 
-    public OrderProduct(Order order, Product product, int amount) {
+    public OrderProduct(Long id, Order order, Product product, int amount) {
+        this.id = id;
         this.order = order;
         this.product = product;
         //this.id = new OrderProductId(order.getOrderId(), product.getId());

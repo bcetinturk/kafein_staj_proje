@@ -4,15 +4,13 @@ import com.example.kafein_staj.datatransferobject.OrderDTO;
 import com.example.kafein_staj.entity.*;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
-import com.example.kafein_staj.repository.OrderProductRepository;
-import com.example.kafein_staj.repository.OrderRepository;
-import com.example.kafein_staj.repository.ProductRepository;
-import com.example.kafein_staj.repository.UserRepository;
+import com.example.kafein_staj.repository.*;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.function.LongFunction;
 
@@ -22,17 +20,20 @@ public class DefaultOrderService implements OrderService {
     private UserRepository userRepository;
     private OrderProductRepository orderProductRepository;
     private ProductRepository productRepository;
+    private BasketProductRepository basketProductRepository;
 
     @Autowired
     public DefaultOrderService(
             OrderRepository orderRepository,
             OrderProductRepository orderProductRepository,
             UserRepository userRepository,
-            ProductRepository productRepository) {
+            ProductRepository productRepository,
+            BasketProductRepository basketProductRepository) {
         this.orderRepository = orderRepository;
         this.orderProductRepository = orderProductRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.basketProductRepository = basketProductRepository;
     }
 
     @Override
@@ -122,6 +123,7 @@ public class DefaultOrderService implements OrderService {
 
 
     @Override
+    @Transactional
     public Order newOrder(Long userId) throws EntityNotFoundException {
         // 1.  Get user
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(""));
@@ -156,9 +158,9 @@ public class DefaultOrderService implements OrderService {
             orderProduct.setAmount(basketProduct.getAmount());
             orderProduct.setProduct(basketProduct.getProduct());
             orderProduct.setOrder(order);
-            System.out.println(orderProduct);
 
             orderProductRepository.save(orderProduct);
+            basketProductRepository.deleteById(basketProduct.getId());
         }
 
         return order;

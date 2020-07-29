@@ -5,6 +5,7 @@ import com.example.kafein_staj.entity.Basket;
 import com.example.kafein_staj.entity.BasketProduct;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
+import com.example.kafein_staj.exception.IllegalOperationException;
 import com.example.kafein_staj.exception.NotEnoughStockException;
 import com.example.kafein_staj.repository.BasketProductRepository;
 import com.example.kafein_staj.repository.BasketRepository;
@@ -51,7 +52,7 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public void addItemToBasket(BasketProduct basketProduct, Long userId) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException {
+    public void addItemToBasket(BasketProduct basketProduct, Long userId) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException, IllegalOperationException {
         try {
             Long productId = basketProduct.getProduct().getId();
             int productQuantity = productRepository.findQuantityById(productId).orElseThrow(
@@ -59,6 +60,10 @@ public class DefaultBasketService implements BasketService {
 
             Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
                     () -> new EntityNotFoundException("No user with id " + userId));
+
+            if(basketProductRepository.findByBasket_IdAndProduct_Id(basket.getId(), productId).isPresent()){
+                throw new EntityAlreadyExists("Item already added to basket");
+            }
 
             if(basketProduct.getAmount() > productQuantity){
                 String message = "Can't add " +
@@ -70,6 +75,8 @@ public class DefaultBasketService implements BasketService {
                         " exists in the stock";
                 throw new NotEnoughStockException(message);
 
+            } else if(basketProduct.getAmount() <= 0){
+                throw new IllegalOperationException("Could add item less than zero");
             } else {
                 basketProduct.setBasket(basket);
                 basketProductRepository.save(basketProduct);

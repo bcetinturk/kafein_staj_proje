@@ -25,7 +25,8 @@ public class BasketProduct {
     public BasketProduct() {
     }
 
-    public BasketProduct(Basket basket, Product product, int amount) {
+    public BasketProduct(Long id, Basket basket, Product product, int amount) {
+        this.id = id;
         this.basket = basket;
         this.product = product;
         this.amount = amount;
