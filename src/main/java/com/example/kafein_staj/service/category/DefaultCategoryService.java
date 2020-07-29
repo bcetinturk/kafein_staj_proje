@@ -3,7 +3,7 @@ package com.example.kafein_staj.service.category;
 import com.example.kafein_staj.entity.Category;
 import com.example.kafein_staj.entity.Product;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
-/*import com.example.kafein_staj.exception.UsedCategoryException;*/
+import com.example.kafein_staj.exception.UsedCategoryException;
 import com.example.kafein_staj.repository.CategoryRepository;
 import com.example.kafein_staj.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DefaultCategoryService implements CategoryService{
     }
 
     @Override
-    public void deleteCategoryById(Long category_id) /*throws UsedCategoryException*/{
+    public void deleteCategoryById(Long category_id) throws UsedCategoryException{
         try {
             boolean isExists=false;
             List<Product> productList;
@@ -45,7 +45,7 @@ public class DefaultCategoryService implements CategoryService{
             }
             if(!isExists){
                 categoryRepository.deleteById(category_id);
-            }/*else throw new UsedCategoryException("category with " + category_id + " is using");*/
+            } else throw new UsedCategoryException("category with " + category_id + " is using");
 
 
         }catch (EmptyResultDataAccessException | com.example.kafein_staj.exception.EntityNotFoundException e){
