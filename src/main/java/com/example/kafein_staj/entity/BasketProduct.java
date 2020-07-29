@@ -8,7 +8,7 @@ public class BasketProduct {
 //    private BasketProductId id;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

@@ -9,7 +9,7 @@ public class OrderProduct {
 //    private OrderProductId id;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

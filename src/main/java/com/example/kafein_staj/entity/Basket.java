@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Basket {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)

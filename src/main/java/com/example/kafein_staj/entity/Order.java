@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name="corder")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
     @Column(nullable = false)
