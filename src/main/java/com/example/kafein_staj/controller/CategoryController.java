@@ -34,7 +34,7 @@ public class CategoryController {
     }
 
     @GetMapping("/category/{id}")
-    CategoryDTO getCategory(@PathVariable Long id) {
+    CategoryDTO getCategory(@PathVariable Long id) throws EntityNotFoundException{
         return categoryMapper.makeDTOFromCategory(categoryService.findById(id));
     }
 
@@ -49,7 +49,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/category/{id}")
-    void deleteCategory(@PathVariable Long id) throws  UsedCategoryException {
+    void deleteCategory(@PathVariable Long id) throws  UsedCategoryException, EntityNotFoundException {
       categoryService.deleteCategoryById(id);
     }
 

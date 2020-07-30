@@ -11,17 +11,18 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import com.example.kafein_staj.exception.EntityNotFoundException;
 import java.util.List;
 
 @Service
 public class DefaultCategoryService implements CategoryService{
     ProductService productService;
     CategoryRepository categoryRepository;
-    @Autowired
 
-    public DefaultCategoryService(CategoryRepository categoryRepository) {
+    @Autowired
+    public DefaultCategoryService(CategoryRepository categoryRepository, ProductService productService) {
         this.categoryRepository = categoryRepository;
+        this.productService = productService;
     }
 
     @Override
@@ -31,11 +32,12 @@ public class DefaultCategoryService implements CategoryService{
     }
 
     @Override
-    public void deleteCategoryById(Long category_id) throws UsedCategoryException{
+    public void deleteCategoryById(Long category_id) throws UsedCategoryException, EntityNotFoundException {
         try {
             boolean isExists=false;
             List<Product> productList;
             productList=productService.findAllByCategoryId(category_id);
+            System.out.println("Products: " + productList);
             for(Product product:productList){
                 if(product.getCategory().getCategoryId().equals(category_id)){
                     isExists=true;
@@ -48,8 +50,10 @@ public class DefaultCategoryService implements CategoryService{
             } else throw new UsedCategoryException("category with " + category_id + " is using");
 
 
-        }catch (EmptyResultDataAccessException | com.example.kafein_staj.exception.EntityNotFoundException e){
+        } catch (EmptyResultDataAccessException e){
             throw new EntityNotFoundException("Category with "+category_id+" has already been deleted");
+        } catch (EntityNotFoundException e) {
+            categoryRepository.deleteById(category_id);
         }
     }
 
