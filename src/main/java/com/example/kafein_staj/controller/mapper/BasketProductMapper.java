@@ -11,15 +11,15 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring", uses = {BasketRepository.class})
 public interface BasketProductMapper {
     @Mappings({
-            @Mapping(target = "basket_id", source = "basket.id"),
-            @Mapping(target = "product_id", source = "product.id"),
+            @Mapping(target = "basketId", source = "basket.id"),
+            @Mapping(target = "productId", source = "product.id"),
             @Mapping(target = "amount", source = "amount")
     })
     BasketProductDTO basketProductToBasketProductDTO(BasketProduct basketProduct);
 
     @Mappings({
-            @Mapping(target = "basket.id", source = "basket_id"),
-            @Mapping(target = "product.id", source = "product_id"),
+            @Mapping(target = "basket.id", source = "basketId"),
+            @Mapping(target = "product.id", source = "productId"),
             @Mapping(target = "amount", source = "amount")
     })
     BasketProduct basketProductDTOToBasketProduct(BasketProductDTO basketProductDto);

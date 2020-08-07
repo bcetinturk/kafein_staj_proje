@@ -4,33 +4,33 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude
 public class BasketProductDTO {
-    private Long basket_id;
-    private Long product_id;
+    private Long basketId;
+    private Long productId;
     private Integer amount;
 
     public BasketProductDTO() {
     }
 
-    public BasketProductDTO(Long basket_id, Long product_id, Integer amount) {
-        this.basket_id = basket_id;
-        this.product_id = product_id;
+    public BasketProductDTO(Long basketId, Long productId, Integer amount) {
+        this.basketId = basketId;
+        this.productId = productId;
         this.amount = amount;
     }
 
-    public Long getBasket_id() {
-        return basket_id;
+    public Long getBasketId() {
+        return basketId;
     }
 
-    public void setBasket_id(Long basket_id) {
-        this.basket_id = basket_id;
+    public void setBasketId(Long basketId) {
+        this.basketId = basketId;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Integer getAmount() {
@@ -44,8 +44,8 @@ public class BasketProductDTO {
     @Override
     public String toString() {
         return "BasketProductDTO{" +
-                "basket_id=" + basket_id +
-                ", product_id=" + product_id +
+                "basket_id=" + basketId +
+                ", product_id=" + productId +
                 ", amount=" + amount +
                 '}';
     }

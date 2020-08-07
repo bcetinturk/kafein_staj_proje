@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
-    private Long order_id;
-    private UUID order_no;
+    private Long orderId;
+    private UUID orderNo;
     private Long totalPrice;
     private String status;
     private String destination;
@@ -17,19 +17,19 @@ public class OrderDTO {
 
     public  OrderDTO(){}
 
-    public OrderDTO(Long order_id, UUID order_no, Long totalPrice, String status, String destination) {
-        this.order_id = order_id;
-        this.order_no = order_no;
+    public OrderDTO(Long orderId, UUID orderNo, Long totalPrice, String status, String destination) {
+        this.orderId = orderId;
+        this.orderNo = orderNo;
         this.totalPrice = totalPrice;
         this.status = status;
         this.destination = destination;
     }
 
-    public Long getOrder_id() {
-        return order_id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public UUID getOrder_no() { return order_no; }
+    public UUID getOrderNo() { return orderNo; }
 
     public Long getTotalPrice() {
         return totalPrice;
@@ -47,12 +47,12 @@ public class OrderDTO {
         return products;
     }
 
-    public void setOrder_id(Long order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public void setOrder_no(UUID order_no) {
-        this.order_no = order_no;
+    public void setOrderNo(UUID orderNo) {
+        this.orderNo = orderNo;
     }
 
     public void setTotalPrice(Long totalPrice) {
@@ -74,8 +74,8 @@ public class OrderDTO {
     @Override
     public String toString() {
         return "OrderDTO{" +
-                "order_id=" + order_id +
-                ", order_no=" + order_no +
+                "order_id=" + orderId +
+                ", order_no=" + orderNo +
                 ", totalPrice=" + totalPrice +
                 ", status='" + status + '\'' +
                 ", destination='" + destination + '\'' +

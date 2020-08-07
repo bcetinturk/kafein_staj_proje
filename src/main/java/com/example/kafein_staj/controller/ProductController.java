@@ -51,6 +51,6 @@ public class ProductController {
     }
 
     void getProductQuantity(ProductDTO productDTO) throws NoQuantityException,EntityNotFoundException {
-        productService.findQuantityById(productDTO.getProduct_id());
+        productService.findQuantityById(productDTO.getProductId());
     }
 }

@@ -12,14 +12,14 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
         @Mappings({
-                @Mapping(target = "product_id", source = "id"),
+                @Mapping(target = "productId", source = "id"),
                 @Mapping(target = "categoryId", source = "category.categoryId")
         })
         ProductDTO makeDTOFromProduct(Product product); // from Entity to DTO
 
 
         @Mappings({
-                @Mapping(target = "id", source = "product_id"),
+                @Mapping(target = "id", source = "productId"),
                 @Mapping(target = "category.categoryId", source = "categoryId")
         })
         Product makeProductFromDTO(ProductDTO productDTO); // from DTO to Entity

@@ -1,15 +1,11 @@
 package com.example.kafein_staj.datatransferobject;
 
-import com.example.kafein_staj.entity.OrderProduct;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDTO   {
-    private Long product_id;
+    private Long productId;
     private String productName;
     private long price;
     private int quantity;
@@ -19,7 +15,7 @@ public class ProductDTO   {
     public ProductDTO(){}
 
     public ProductDTO(Long prodcut_id, String productName, long price, int quantity, String description, Long categoryId) {
-        this.product_id = prodcut_id;
+        this.productId = prodcut_id;
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
@@ -29,7 +25,7 @@ public class ProductDTO   {
 
     @JsonProperty
 
-    public Long getProduct_id() { return product_id; }
+    public Long getProductId() { return productId; }
 
     public String getProductName() { return productName; }
 
@@ -43,8 +39,8 @@ public class ProductDTO   {
 
     public Long getCategoryId() { return categoryId; }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public void setProductName(String productName) {
