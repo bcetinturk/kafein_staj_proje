@@ -2,19 +2,24 @@ package com.example.kafein_staj.controller;
 
 import com.example.kafein_staj.controller.mapper.BasketProductMapper;
 import com.example.kafein_staj.controller.mapper.UserMapper;
-import com.example.kafein_staj.datatransferobject.BasketDTO;
-import com.example.kafein_staj.datatransferobject.BasketProductDTO;
-import com.example.kafein_staj.datatransferobject.UserDTO;
+import com.example.kafein_staj.datatransferobject.*;
 import com.example.kafein_staj.entity.Role;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
 import com.example.kafein_staj.exception.NotEnoughStockException;
 import com.example.kafein_staj.service.basket.BasketService;
+import com.example.kafein_staj.service.user.UserDetailsServiceImpl;
 import com.example.kafein_staj.service.user.UserService;
+import com.example.kafein_staj.utils.JwtUtil;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,9 +33,33 @@ public class UserController {
     private BasketProductMapper basketProductMapper = Mappers.getMapper(BasketProductMapper.class);
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     public UserController(UserService userService, BasketService basketService) {
         this.userService = userService;
         this.basketService = basketService;
+    }
+
+    @PostMapping("/signin")
+    AuthenticationResponse login(@RequestBody AuthenticationRequest request) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Incorrect email or password", e);
+        }
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String jwt = jwtUtil.generateToken(userDetails);
+        return new AuthenticationResponse(jwt);
     }
 
     @GetMapping("/user/{id}")
