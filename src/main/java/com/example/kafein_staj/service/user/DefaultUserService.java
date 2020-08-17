@@ -40,6 +40,8 @@ public class DefaultUserService implements UserService{
     @Override
     public User register(User user) throws EntityAlreadyExists {
         try {
+            System.out.println(user);
+            user.setRole(Role.CUSTOMER);    // /user/create  yeni müşteriler için, buradan admin kaydı yapılamaz
             user = userRepository.save(user);
             Basket basket = new Basket(); // create a basket for user
             basket.setUser(user);
@@ -57,6 +59,7 @@ public class DefaultUserService implements UserService{
                     () -> new EntityNotFoundException("User with id " + id + " does not exist"));
 
             updatedUser.setId(id);
+            updatedUser.setRole(Role.CUSTOMER);  // Rolünü admin yapamaması için
             userRepository.save(updatedUser);
 
         } catch (DataIntegrityViolationException e) {

@@ -1,17 +1,12 @@
 package com.example.kafein_staj.service.user;
 
 import com.example.kafein_staj.entity.User;
+import com.example.kafein_staj.entity.UserDetailsImpl;
 import com.example.kafein_staj.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,20 +18,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("In loadUserByUsername");
+    public UserDetailsImpl loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(s).orElseThrow(()->
                 new UsernameNotFoundException("User not found"));
 
-        System.out.println("User found");
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
-        System.out.println("Granted authorities");
-        UserDetails userDetails = new org.springframework.security.core.userdetails.
-                User(user.getEmail(), user.getPassword(), authorities);
-
-        System.out.println("Created user details");
+        System.out.println("Created user details" + userDetails);
         return userDetails;
     }
 }

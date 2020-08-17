@@ -1,6 +1,7 @@
 package com.example.kafein_staj.controller.mapper;
 
 import com.example.kafein_staj.datatransferobject.UserDTO;
+import com.example.kafein_staj.datatransferobject.UserRegisterDTO;
 import com.example.kafein_staj.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,6 +16,9 @@ public interface UserMapper {
 
     @Mapping(target = "phoneNumber", source = "phone")
     User userDTOToUser(UserDTO userDTO);
+
+    @Mapping(target = "phoneNumber", source = "phone")
+    User registerDTOToUser(UserRegisterDTO userRegisterDTO);
 
     List<User> dtoToUsers(List<UserDTO> userDTOS);
 

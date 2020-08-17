@@ -4,6 +4,7 @@ import com.example.kafein_staj.controller.mapper.BasketProductMapper;
 import com.example.kafein_staj.controller.mapper.UserMapper;
 import com.example.kafein_staj.datatransferobject.*;
 import com.example.kafein_staj.entity.Role;
+import com.example.kafein_staj.entity.UserDetailsImpl;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
@@ -15,11 +16,10 @@ import com.example.kafein_staj.utils.JwtUtil;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,22 +57,24 @@ public class UserController {
             throw new Exception("Incorrect email or password", e);
         }
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String jwt = jwtUtil.generateToken(userDetails);
         return new AuthenticationResponse(jwt);
     }
 
-    @GetMapping("/user/{id}")
-    UserDTO getUser(@PathVariable Long id){
+    @GetMapping("/user")
+    UserDTO getUser(){
+        Long userId = getPrincipalId();
         try {
-            return userMapper.userToUserDTO(userService.findById(id));
+            return userMapper.userToUserDTO(userService.findById(userId));
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         }
     }
 
-    @GetMapping("/user/{userId}/basket")
-    List<BasketDTO> getUserBasketDetails(@PathVariable Long userId){
+    @GetMapping("/user/basket")
+    List<BasketDTO> getUserBasketDetails(){
+        Long userId = getPrincipalId();
         try {
             return basketService.findByUser_Id(userId);
         } catch (EntityNotFoundException e) {
@@ -85,20 +87,19 @@ public class UserController {
         return userMapper.userToDto(userService.getAllUsersByRole(role));
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/register")
     @ResponseStatus(code = HttpStatus.CREATED)
-    UserDTO registerUser(@RequestBody UserDTO userDto) {
-        System.out.println(userDto);
+    UserDTO registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         try {
-            return userMapper.userToUserDTO(
-                    userService.register(userMapper.userDTOToUser(userDto)));
+            return userMapper.userToUserDTO(userService.register(userMapper.registerDTOToUser(userRegisterDTO)));
         } catch (EntityAlreadyExists entityAlreadyExists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with same email or phone number already exists");
         }
     }
 
-    @PostMapping("/user/{userId}/basket")
-    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) {
+    @PostMapping("/user/basket")
+    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO) {
+        Long userId = getPrincipalId();
         try {
             System.out.println(basketProductDTO);
             basketService.addItemToBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO), userId);
@@ -113,8 +114,9 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user/{userId}/basket")
-    void deleteItemFromBasket(@RequestBody BasketProductDTO basketProductDTO, @PathVariable Long userId) {
+    @DeleteMapping("/user/basket")
+    void deleteItemFromBasket(@RequestBody BasketProductDTO basketProductDTO) {
+        Long userId = getPrincipalId();
         try {
             basketService.deleteItemFromBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO), userId);
         } catch (EntityNotFoundException e) {
@@ -122,23 +124,29 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/user/{id}")
-    void deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/user")
+    void deleteUser() {
+        Long userId = getPrincipalId();
         try {
-            userService.deleteById(id);
+            userService.deleteById(userId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already deleted");
         }
     }
 
-    @PatchMapping("/user/{id}")
-    void updateUser(@RequestBody UserDTO userDto, @PathVariable Long id){
+    @PatchMapping("/user")
+    void updateUser(@RequestBody UserDTO userDto){
+        Long userId = getPrincipalId();
         try {
-            userService.update(userMapper.userDTOToUser(userDto), id);
+            userService.update(userMapper.userDTOToUser(userDto), userId);
         } catch (EntityAlreadyExists entityAlreadyExists) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with same email or phone number already exists");
         } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         }
+    }
+
+    private Long getPrincipalId() {
+        return ((UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }

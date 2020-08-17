@@ -35,6 +35,7 @@ public class User {
     @Enumerated
     private Role role;
 
+    @NotNull
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

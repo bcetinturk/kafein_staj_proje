@@ -33,9 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Şimdilik giriş yapmadan hiçbir url e erişim yok
         http.csrf().disable().authorizeRequests()
+                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("ADMIN", "CUSTOMER")
+                .antMatchers("/user/basket").hasRole("CUSTOMER")
                 .antMatchers("/signin").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/product/**", "/category/**").permitAll()
+                .antMatchers("/category/**").hasRole("ADMIN")
+                .antMatchers("/user/basket").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
