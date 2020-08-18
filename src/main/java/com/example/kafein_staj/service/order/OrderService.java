@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface OrderService {
-    Order findById(Long order_id) throws EntityNotFoundException;
+    Order findById(Long order_id) throws EntityNotFoundException, IllegalOperationException;
     Order updateOrderStatus(Long order_id, OrderDTO newStatus) throws EntityNotFoundException, IllegalOperationException;
-    void deleteById(Long order_id) throws EntityNotFoundException;
+    void deleteById(Long order_id) throws EntityNotFoundException, IllegalOperationException;
     List<Order> getAllOrdersByCustomer(Long customer_id) throws EntityNotFoundException;
     List<OrderProduct> getAllProducts(Long orderId) throws EntityNotFoundException;
     void changeQuantity(Order order);
-    void cancelledOrder(Order order) throws EntityNotFoundException;
-    Order newOrder(Long userId) throws EntityNotFoundException;
+    void cancelledOrder(Long orderId) throws EntityNotFoundException, IllegalOperationException;
+    Order newOrder() throws EntityNotFoundException;
 }

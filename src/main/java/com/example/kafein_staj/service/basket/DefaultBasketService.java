@@ -10,6 +10,7 @@ import com.example.kafein_staj.exception.NotEnoughStockException;
 import com.example.kafein_staj.repository.BasketProductRepository;
 import com.example.kafein_staj.repository.BasketRepository;
 import com.example.kafein_staj.repository.ProductRepository;
+import com.example.kafein_staj.utils.PrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,12 +24,18 @@ public class DefaultBasketService implements BasketService {
     private BasketRepository basketRepository;
     private BasketProductRepository basketProductRepository;
     private ProductRepository productRepository;
+    private PrincipalUtil principalUtil;
 
     @Autowired
-    public DefaultBasketService(BasketRepository basketRepository, BasketProductRepository basketProductRepository, ProductRepository productRepository) {
+    public DefaultBasketService(
+            BasketRepository basketRepository,
+            BasketProductRepository basketProductRepository,
+            ProductRepository productRepository,
+            PrincipalUtil principalUtil) {
         this.basketRepository = basketRepository;
         this.basketProductRepository = basketProductRepository;
         this.productRepository = productRepository;
+        this.principalUtil = principalUtil;
     }
 
     @Override
@@ -38,8 +45,9 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public List<BasketDTO> findByUser_Id(Long id) throws EntityNotFoundException {
-        Basket basket = basketRepository.findByUser_Id(id).orElseThrow(
+    public List<BasketDTO> findByUser_Id() throws EntityNotFoundException {
+        Long userId = principalUtil.getPrincipalId();
+        Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
                 () -> new EntityNotFoundException("User does not exist or does not have a basket"));
 
         return basketProductRepository.getBasketDetails(basket.getId());
@@ -52,8 +60,9 @@ public class DefaultBasketService implements BasketService {
     }
 
     @Override
-    public void addItemToBasket(BasketProduct basketProduct, Long userId) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException, IllegalOperationException {
+    public void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException, IllegalOperationException {
         try {
+            Long userId = principalUtil.getPrincipalId();
             Long productId = basketProduct.getProduct().getId();
             int productQuantity = productRepository.findQuantityById(productId).orElseThrow(
                     () -> new EntityNotFoundException("No product with id " + productId));
@@ -88,8 +97,9 @@ public class DefaultBasketService implements BasketService {
 
     @Override
     @Transactional
-    public void deleteItemFromBasket(BasketProduct basketProduct, Long userId) throws EntityNotFoundException {
+    public void deleteItemFromBasket(BasketProduct basketProduct) throws EntityNotFoundException {
         try {
+            Long userId = principalUtil.getPrincipalId();
             Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
                     () -> new EntityNotFoundException("No user with id " + userId));
 

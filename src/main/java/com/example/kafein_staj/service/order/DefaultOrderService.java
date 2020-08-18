@@ -5,6 +5,7 @@ import com.example.kafein_staj.entity.*;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
 import com.example.kafein_staj.repository.*;
+import com.example.kafein_staj.utils.PrincipalUtil;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +22,7 @@ public class DefaultOrderService implements OrderService {
     private OrderProductRepository orderProductRepository;
     private ProductRepository productRepository;
     private BasketProductRepository basketProductRepository;
+    private PrincipalUtil principalUtil;
 
     @Autowired
     public DefaultOrderService(
@@ -28,30 +30,36 @@ public class DefaultOrderService implements OrderService {
             OrderProductRepository orderProductRepository,
             UserRepository userRepository,
             ProductRepository productRepository,
-            BasketProductRepository basketProductRepository) {
+            BasketProductRepository basketProductRepository,
+            PrincipalUtil principalUtil) {
         this.orderRepository = orderRepository;
         this.orderProductRepository = orderProductRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.basketProductRepository = basketProductRepository;
+        this.principalUtil = principalUtil;
     }
 
     @Override
-    public Order findById(Long order_id) throws EntityNotFoundException {
-        return orderRepository.findById(order_id).orElseThrow(
+    public Order findById(Long order_id) throws EntityNotFoundException, IllegalOperationException {
+        Long userId = principalUtil.getPrincipalId();
+
+        Order order = orderRepository.findById(order_id).orElseThrow(
                 () -> new EntityNotFoundException("Order with id " + order_id + " does not exist"));
 
+        //siparişi görüntülemek isteyen kişi ile siparişi veren kişi aynı mı?
+        if ( !(order.getUser().getId().equals(userId)) ) {
+            throw new IllegalOperationException("Order's user id does not match");
+        }
+
+        return order;
     }
 
 
     @Override
-    public void deleteById(Long order_id) throws EntityNotFoundException {
-        try {
-            orderRepository.deleteById(order_id);
-
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntityNotFoundException("Order with " + order_id + " has already been deleted");
-        }
+    public void deleteById(Long order_id) throws EntityNotFoundException, IllegalOperationException  {
+        findById(order_id);
+        orderRepository.deleteById(order_id);
     }
 
     @Override
@@ -109,22 +117,21 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public void cancelledOrder(Order order) throws EntityNotFoundException {
-        String orderStatus = order.getStatus();
-        if (orderRepository.existsById(order.getOrderId())) {
-            if (orderStatus.equals("Preparing")) {
-                this.deleteById(order.getOrderId());
-            }
+    public void cancelledOrder(Long orderId) throws EntityNotFoundException, IllegalOperationException {
+        Order order = findById(orderId);
+        if( order.getStatus().equals("Preparing") ) {
+            order.setStatus("Cancelled");
+            orderRepository.save(order);
         } else {
-            throw new EntityNotFoundException("order with " + order.getOrderId() + " does not exists");
-
+            throw new IllegalOperationException("");
         }
     }
 
 
     @Override
     @Transactional
-    public Order newOrder(Long userId) throws EntityNotFoundException {
+    public Order newOrder() throws EntityNotFoundException {
+        Long userId = principalUtil.getPrincipalId();
         // 1.  Get user
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(""));
         // 2.  Get user's basket

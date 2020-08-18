@@ -13,6 +13,7 @@ import com.example.kafein_staj.service.basket.BasketService;
 import com.example.kafein_staj.service.user.UserDetailsServiceImpl;
 import com.example.kafein_staj.service.user.UserService;
 import com.example.kafein_staj.utils.JwtUtil;
+import com.example.kafein_staj.utils.PrincipalUtil;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,23 +29,25 @@ import java.util.List;
 @RestController
 public class UserController {
     private UserService userService;
-    private BasketService basketService;
     private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
-    private BasketProductMapper basketProductMapper = Mappers.getMapper(BasketProductMapper.class);
 
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     private JwtUtil jwtUtil;
+    private PrincipalUtil principalUtil;
 
     @Autowired
-    public UserController(UserService userService, BasketService basketService) {
+    public UserController(
+            UserService userService,
+            AuthenticationManager authenticationManager,
+            UserDetailsServiceImpl userDetailsService,
+            JwtUtil jwtUtil,
+            PrincipalUtil principalUtil) {
         this.userService = userService;
-        this.basketService = basketService;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+        this.principalUtil = principalUtil;
     }
 
     @PostMapping("/signin")
@@ -64,19 +67,9 @@ public class UserController {
 
     @GetMapping("/user")
     UserDTO getUser(){
-        Long userId = getPrincipalId();
+        Long userId = principalUtil.getPrincipalId();
         try {
             return userMapper.userToUserDTO(userService.findById(userId));
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
-        }
-    }
-
-    @GetMapping("/user/basket")
-    List<BasketDTO> getUserBasketDetails(){
-        Long userId = getPrincipalId();
-        try {
-            return basketService.findByUser_Id(userId);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         }
@@ -97,36 +90,9 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/basket")
-    void addItemToBasket(@RequestBody BasketProductDTO basketProductDTO) {
-        Long userId = getPrincipalId();
-        try {
-            System.out.println(basketProductDTO);
-            basketService.addItemToBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO), userId);
-        } catch (EntityAlreadyExists entityAlreadyExists) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item(s) already added to basket");
-        } catch (NotEnoughStockException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not add item more than in the stock");
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product with id " + basketProductDTO.getProductId() + " or user with id " + userId + " does not exist");
-        } catch (IllegalOperationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not add item(s) less than zero");
-        }
-    }
-
-    @DeleteMapping("/user/basket")
-    void deleteItemFromBasket(@RequestBody BasketProductDTO basketProductDTO) {
-        Long userId = getPrincipalId();
-        try {
-            basketService.deleteItemFromBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO), userId);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item already deleted or user does not exist");
-        }
-    }
-
     @DeleteMapping("/user")
     void deleteUser() {
-        Long userId = getPrincipalId();
+        Long userId = principalUtil.getPrincipalId();
         try {
             userService.deleteById(userId);
         } catch (EntityNotFoundException e) {
@@ -136,7 +102,7 @@ public class UserController {
 
     @PatchMapping("/user")
     void updateUser(@RequestBody UserDTO userDto){
-        Long userId = getPrincipalId();
+        Long userId = principalUtil.getPrincipalId();
         try {
             userService.update(userMapper.userDTOToUser(userDto), userId);
         } catch (EntityAlreadyExists entityAlreadyExists) {
@@ -144,9 +110,5 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
         }
-    }
-
-    private Long getPrincipalId() {
-        return ((UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }
