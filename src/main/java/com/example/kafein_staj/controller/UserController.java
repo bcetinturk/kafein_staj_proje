@@ -1,6 +1,5 @@
 package com.example.kafein_staj.controller;
 
-import com.example.kafein_staj.controller.mapper.BasketProductMapper;
 import com.example.kafein_staj.controller.mapper.UserMapper;
 import com.example.kafein_staj.datatransferobject.*;
 import com.example.kafein_staj.entity.Role;
@@ -8,8 +7,6 @@ import com.example.kafein_staj.entity.UserDetailsImpl;
 import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
-import com.example.kafein_staj.exception.NotEnoughStockException;
-import com.example.kafein_staj.service.basket.BasketService;
 import com.example.kafein_staj.service.user.UserDetailsServiceImpl;
 import com.example.kafein_staj.service.user.UserService;
 import com.example.kafein_staj.utils.JwtUtil;
@@ -20,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -94,8 +90,8 @@ public class UserController {
     void deleteUser() {
         Long userId = principalUtil.getPrincipalId();
         try {
-            userService.deleteById(userId);
-        } catch (EntityNotFoundException e) {
+            userService.deleteUserById(userId);
+        } catch (EntityNotFoundException | IllegalOperationException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already deleted");
         }
     }
