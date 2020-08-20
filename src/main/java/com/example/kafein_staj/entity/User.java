@@ -52,6 +52,16 @@ public class User {
         this.id = id;
     }
 
+    public User( String firstName, String lastName, String email, String phoneNumber, String address, Role role, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.role = role;
+        this.password = password;
+    }
+
     public User(Long id, String firstName, String user_lastname, String user_mail, String user_number, String address, Role role, String password, Basket basket) {
        this.id = id;
         this.firstName = firstName;
