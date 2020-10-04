@@ -1,11 +1,13 @@
 package com.example.kafein_staj.datatransferobject;
 
 public class BasketDTO {
+    private Long productId;
     private String productName;
     private Long price;
     private Integer amount;
 
-    public BasketDTO(String productName, Long price, Integer amount) {
+    public BasketDTO(Long productId, String productName, Long price, Integer amount) {
+        this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.amount = amount;
@@ -33,5 +35,13 @@ public class BasketDTO {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

@@ -12,12 +12,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @NotNull(message="Name can not be null!")
     private String firstName;
 
-    @Column(nullable = false)
-    @NotNull(message="Lastname can not be null!")
     private String lastName;
 
     @Column(nullable = false, unique = true)
@@ -28,8 +24,6 @@ public class User {
     @NotNull(message = "phone can not be null!")
     private String phoneNumber;
 
-    @Column(nullable = false)
-    @NotNull(message = "Address can not be null!")
     private String address;
 
     @Enumerated

@@ -15,5 +15,5 @@ public interface BasketService {
     List<BasketDTO> findByUser_Id() throws EntityNotFoundException;
     List<BasketProduct> getAllProductsById(Long id) throws EntityNotFoundException;
     void addItemToBasket(BasketProduct basketProduct) throws EntityAlreadyExists, NotEnoughStockException, EntityNotFoundException, IllegalOperationException;
-    void deleteItemFromBasket(BasketProduct basketProduct) throws EntityNotFoundException;
+    void deleteItemFromBasket(Long productId) throws EntityNotFoundException;
 }

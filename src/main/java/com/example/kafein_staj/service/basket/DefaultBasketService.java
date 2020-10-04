@@ -97,7 +97,7 @@ public class DefaultBasketService implements BasketService {
 
     @Override
     @Transactional
-    public void deleteItemFromBasket(BasketProduct basketProduct) throws EntityNotFoundException {
+    public void deleteItemFromBasket(Long productId) throws EntityNotFoundException {
         try {
             Long userId = principalUtil.getPrincipalId();
             Basket basket = basketRepository.findByUser_Id(userId).orElseThrow(
@@ -105,7 +105,7 @@ public class DefaultBasketService implements BasketService {
 
             basketProductRepository.deleteByBasket_IdAndProduct_Id(
                     basket.getId(),
-                    basketProduct.getProduct().getId());
+                    productId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException("Item already deleted from basket");
         }

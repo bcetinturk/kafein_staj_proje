@@ -15,6 +15,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 @Configuration
 @EnableWebSecurity
@@ -33,12 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http.cors().configurationSource(corsConfigurationSource()).and()
+                .csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/product/*", "/category/**").permitAll()
                 .antMatchers("/admin", "/admin/*").hasRole("ADMIN")
                 .antMatchers("/product/*", "/category/*", "/users").hasRole("ADMIN")
                 .antMatchers("/user", "/user/*").hasRole("CUSTOMER")
-                .antMatchers("/order/*/status").hasRole("ADMIN")
+                .antMatchers("/orxce").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/order/*").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers("/order/*").hasRole("CUSTOMER")
                 .antMatchers("/signin", "/register").permitAll()
@@ -58,5 +67,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    //This can be customized as required
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        List<String> allowOrigins = Arrays.asList("*");
+        configuration.setAllowedOrigins(allowOrigins);
+        configuration.setAllowedMethods(singletonList("*"));
+        configuration.setAllowedHeaders(singletonList("*"));
+        //in case authentication is enabled this flag MUST be set, otherwise CORS requests will fail
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

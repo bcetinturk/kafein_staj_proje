@@ -15,12 +15,7 @@ public class Product {
     @NotNull(message = "product name can not be null!")
     private String productName;
 
-    @Column(nullable = false)
-    @NotNull(message = "price can not be null!")
     private long price;
-
-    @Column(nullable = false)
-    @NotNull(message = "can not be null!")
     private int quantity;
 
     private String description;

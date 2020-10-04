@@ -17,17 +17,8 @@ public class Order {
     @NotNull(message = "order number can not be null!")
     private UUID orderNo;
 
-    @Column(nullable = false)
-    @NotNull(message = "total price can not be null!")
     private Long totalPrice;
-
-
-    @Column(nullable = false)
-    @NotNull(message = "destination can not be null!")
     private String destination;
-
-    @Column(nullable = false)
-    @NotNull(message = "status can not be null!")
     private String status;
 
     @ManyToOne

@@ -8,9 +8,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+
 @Mapper(uses = {OrderProductMapper.class})
 public interface OrderMapper {
     OrderDTO makeDTOFromOrder(Order order); // from Entity to DTO
 
     Order makeOrderFromDTO(OrderDTO orderDTO); // from DTO to Entity
+
+    List<OrderDTO> toListDTO(List<Order> orders);
 }

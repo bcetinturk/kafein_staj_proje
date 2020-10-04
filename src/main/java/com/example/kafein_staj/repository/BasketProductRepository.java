@@ -13,7 +13,7 @@ public interface BasketProductRepository extends CrudRepository<BasketProduct, L
     Optional<List<BasketProduct>> findAllByBasket_Id(Long basket_idd);
 
     // Sepetteki bütün ürünleri fiyat ve adediyle döndürür
-    @Query("select new com.example.kafein_staj.datatransferobject.BasketDTO(p.productName, p.price, bp.amount) from Basket b, BasketProduct bp, Product p where b.id=bp.basket and bp.product=p.id and b.id=:basketId")
+    @Query("select new com.example.kafein_staj.datatransferobject.BasketDTO(p.id, p.productName, p.price, bp.amount) from Basket b, BasketProduct bp, Product p where b.id=bp.basket and bp.product=p.id and b.id=:basketId")
     List<BasketDTO> getBasketDetails(@Param("basketId") Long basketId);
 
     void deleteByBasket_IdAndProduct_Id(Long basket_id, Long product_id);
