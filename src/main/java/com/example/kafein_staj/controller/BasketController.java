@@ -45,10 +45,10 @@ public class BasketController {
         }
     }
 
-    @DeleteMapping("/user/basket")
-    void deleteItemFromBasket(@RequestBody BasketProductDTO basketProductDTO) {
+    @DeleteMapping("/user/basket/{id}")
+    void deleteItemFromBasket(@PathVariable Long id) {
         try {
-            basketService.deleteItemFromBasket(basketProductMapper.basketProductDTOToBasketProduct(basketProductDTO));
+            basketService.deleteItemFromBasket(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item already deleted or user does not exist");
         }

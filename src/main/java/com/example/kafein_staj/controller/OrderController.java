@@ -2,29 +2,36 @@ package com.example.kafein_staj.controller;
 
 import com.example.kafein_staj.controller.mapper.OrderMapper;
 import com.example.kafein_staj.datatransferobject.OrderDTO;
-import com.example.kafein_staj.datatransferobject.ProductDTO;
-import com.example.kafein_staj.datatransferobject.UserDTO;
-import com.example.kafein_staj.exception.EntityAlreadyExists;
 import com.example.kafein_staj.exception.EntityNotFoundException;
 import com.example.kafein_staj.exception.IllegalOperationException;
-import com.example.kafein_staj.repository.OrderRepository;
 import com.example.kafein_staj.service.order.OrderService;
-import com.fasterxml.jackson.databind.node.TextNode;
+import com.example.kafein_staj.utils.PrincipalUtil;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class OrderController {
     private OrderService orderService;
+    private PrincipalUtil principalUtil;
     private OrderMapper orderMapper= Mappers.getMapper(OrderMapper.class);
 
     @Autowired
-    public OrderController(OrderService orderService) {this.orderService = orderService; }
+    public OrderController(OrderService orderService, PrincipalUtil principalUtil) {this.orderService = orderService;
+        this.principalUtil = principalUtil;
+    }
 
     @GetMapping("/order/{order_id}")
     OrderDTO getOrder(@PathVariable Long order_id) throws EntityNotFoundException, IllegalOperationException {
         return orderMapper.makeDTOFromOrder(orderService.findById(order_id));
+    }
+
+    @GetMapping("/orders")
+    List<OrderDTO> getOrders() throws EntityNotFoundException {
+        Long userId = principalUtil.getPrincipalId();
+        return orderMapper.toListDTO(orderService.getAllOrdersByCustomer(userId));
     }
 
     @PostMapping("/order/new")

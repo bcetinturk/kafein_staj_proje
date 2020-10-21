@@ -56,10 +56,27 @@ public class DefaultUserService implements UserService{
             User user = userRepository.findById(id).orElseThrow(
                     () -> new EntityNotFoundException("User with id " + id + " does not exist"));
 
-            updatedUser.setId(id);
-            updatedUser.setPassword(user.getPassword()); //
-            updatedUser.setRole(user.getRole());  // önceden rolü neyse şimdi de aynı
-            userRepository.save(updatedUser);
+            if(updatedUser.getFirstName() != null) {
+                user.setFirstName(updatedUser.getFirstName());
+            }
+
+            if(updatedUser.getLastName() != null) {
+                user.setLastName(updatedUser.getLastName());
+            }
+
+            if(updatedUser.getAddress() != null) {
+                user.setAddress(updatedUser.getAddress());
+            }
+
+            if(updatedUser.getEmail() != null) {
+                user.setEmail(updatedUser.getEmail());
+            }
+
+            if(updatedUser.getPhoneNumber() != null) {
+                user.setPhoneNumber(updatedUser.getPhoneNumber());
+            }
+
+            userRepository.save(user);
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityAlreadyExists("Same user with email or phone number exists");
